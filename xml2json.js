@@ -18,7 +18,7 @@
 function X2JS(config) {
 	'use strict';
 		
-	var VERSION = "1.1.0";
+	var VERSION = "1.1.1";
 	
 	config = config || {};
 	initConfigDefaults();
@@ -104,9 +104,7 @@ function X2JS(config) {
 				else {
 					if(result[childName] != null) {
 						if( !(result[childName] instanceof Array)) {
-							var tmpObj = result[childName];
-							result[childName] = new Array();
-							result[childName][0] = tmpObj;
+							result[childName] = [result[childName]];
 							toArrayAccessForm(result, childName);
 						}
 					}
@@ -173,7 +171,7 @@ function X2JS(config) {
 			for(var aidx = 0; aidx < attrList.length; aidx++) {
 				var attrName = attrList[aidx];
 				var attrVal = jsonObj[attrName];
-				resultStr+=" "+attrName.substr(1)+"='"+attrVal+"'";
+				resultStr+=" "+attrName.substr(config.attributePrefix.length)+"='"+attrVal+"'";
 			}
 		}
 		if(!closed)

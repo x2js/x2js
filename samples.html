@@ -143,12 +143,12 @@
     //Change prefix for attributes
     var x2jsChangedAttrs = new X2JS({    	 				
     	// XML attributes. Default is "_"
-    	attributePrefix : "$"
+    	attributePrefix : "$$"
     });
     jsonObj = x2jsChangedAttrs.xml_str2json( xmlText );
-    console.log(jsonObj.MyOperation.$myAttr);
-    console.log(jsonObj.MyOperation.test2.$myAttr);
-    console.log(jsonObj.MyOperation.txtAttrChild.$sAttr);
+    console.log(jsonObj.MyOperation.$$myAttr);
+    console.log(jsonObj.MyOperation.test2.$m$yAttr);
+    console.log(jsonObj.MyOperation.txtAttrChild.$$sAttr);
     
     xmlDocStr = x2jsChangedAttrs.json2xml_str({
             TestAttrRoot : {
@@ -156,7 +156,7 @@
                 MyChild : 'my_child_value',
                 MyAnotherChild: 10,
                 MyTextAttrChild : {
-                    $myTextAttr : 'myTextAttrValue',
+                    $$myTextAttr : 'myTextAttrValue',
                     __text : 'HelloText'
                 }
             }
