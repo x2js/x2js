@@ -18,20 +18,16 @@
 function X2JS(config) {
 	'use strict';
 		
-	var VERSION = "1.1.2";
+	var VERSION = "1.1.3";
 	
 	config = config || {};
 	initConfigDefaults();
 	
 	function initConfigDefaults() {
-		if(config.escapeMode === undefined)
-			config.escapeMode = true;
-		if(config.attributePrefix === undefined)
-			config.attributePrefix = "_";
-		if(config.arrayAccessForm === undefined)
-			config.arrayAccessForm = "none";
-		if(config.emptyNodeForm === undefined)
-			config.emptyNodeForm = "text";
+		config.escapeMode = config.escapeMode || true;
+		config.attributePrefix = config.attributePrefix || "_";
+		config.arrayAccessForm = config.arrayAccessForm || "none";
+		config.emptyNodeForm = config.emptyNodeForm || "text";
 	}
 
 	var DOMNodeTypes = {
