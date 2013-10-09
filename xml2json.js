@@ -28,6 +28,7 @@ function X2JS(config) {
 		config.attributePrefix = config.attributePrefix || "_";
 		config.arrayAccessForm = config.arrayAccessForm || "none";
 		config.emptyNodeForm = config.emptyNodeForm || "text";
+		config.enableToStringFunc = config.enableToStringFunc || true;
 	}
 
 	var DOMNodeTypes = {
@@ -153,7 +154,7 @@ function X2JS(config) {
 			}
 			delete result.__cnt;			
 			
-			if(result.__text!=null || result.__cdata!=null) {
+			if( config.enableToStringFunc && result.__text!=null || result.__cdata!=null ) {
 				result.toString = function() {
 					return (this.__text!=null? this.__text:'')+( this.__cdata!=null ? this.__cdata:'');
 				};
