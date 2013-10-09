@@ -27,7 +27,11 @@
     	// When X2JS found empty node like <test></test> it will be transformed to test : '' for 'text' mode, 
     	// or to Object for 'object' mode  
     	// Default is 'text'
-    	emptyNodeForm  : "text"
+    	emptyNodeForm  : "text",
+    	
+    	// Enable/Disable auxiliary function in generated JSON object to print text nodes with __text/__cdata
+    	// Default is true
+    	enableToStringFunc : true
     });
         
     // JSON to DOM
