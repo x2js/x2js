@@ -29,6 +29,7 @@ function X2JS(config) {
 		config.arrayAccessForm = config.arrayAccessForm || "none";
 		config.emptyNodeForm = config.emptyNodeForm || "text";
 		config.enableToStringFunc = config.enableToStringFunc || true;
+		config.arrayAccessFormPaths = config.arrayAccessFormPaths || []; 
 	}
 
 	var DOMNodeTypes = {
@@ -107,9 +108,7 @@ function X2JS(config) {
 							toArrayAccessForm(result, childName);
 						}
 					}
-					var aridx = 0;
-					while(result[childName][aridx]!=null) aridx++;
-					(result[childName])[aridx] = parseDOMChildren(child);
+					(result[childName])[result[childName].length] = parseDOMChildren(child);
 				}			
 			}
 			
