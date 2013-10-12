@@ -103,9 +103,15 @@ function X2JS(config) {
 	function parseDOMChildren( node, path ) {
 		if(node.nodeType == DOMNodeTypes.DOCUMENT_NODE) {
 			var result = new Object;
-			var child = node.firstChild; 
-			var childName = getNodeLocalName(child);
-			result[childName] = parseDOMChildren(child, childName);
+			var nodeChildren = node.childNodes;
+			// Alternative for firstElementChild which is not supported in some environments
+			for(var cidx=0; cidx <nodeChildren.length; cidx++) {
+				var child = nodeChildren.item(cidx);
+				if(child.nodeType == DOMNodeTypes.ELEMENT_NODE) {
+					var childName = getNodeLocalName(child);
+					result[childName] = parseDOMChildren(child, childName);
+				}
+			}
 			return result;
 		}
 		else

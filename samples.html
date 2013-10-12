@@ -238,7 +238,7 @@
     console.log(jsonObj.test);
     
     // Parse XML with CDATA
-    var xmlText = "<test><simple>simple success</simple><data><![CDATA[<success/>]]></data> </test>";
+    var xmlText = "<!-- Root comment --><test><simple>simple success</simple><data><![CDATA[<CDATA success/>]]></data> </test>";
     
     var jsonObj = x2js.xml_str2json( xmlText );
     console.log(jsonObj.test.data.toString());
