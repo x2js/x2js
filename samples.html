@@ -31,7 +31,14 @@
     	
     	// Enable/Disable auxiliary function in generated JSON object to print text nodes with __text/__cdata
     	// Default is true
-    	enableToStringFunc : true
+    	enableToStringFunc : true,
+    	
+    	// Array access paths (array). 
+    	// Use this option to configure paths to XML elements always in "array form". 
+    	// You can configure beforehand paths to all your array elements based on XSD or your knowledge
+    	// about XML structure
+    	// Every path could be simple string (like 'parent.child1.child2', regex like /.*\.child2/, or custom function)
+    	arrayAccessFormPaths : []
     });
         
     // JSON to DOM
@@ -284,6 +291,27 @@
     jsonObj = x2js.xml_str2json( xmlDocStr );
     console.log(jsonObj.MyRoot.MyEscapeXmlChild);
     console.log(jsonObj.MyRoot.MyEscapeXmlChild2.toString());
+    
+    // Array access path 
+    x2js = new X2JS({
+    	arrayAccessFormPaths : [
+		   "MyArrays.test4.item",
+    	   /.*\.test3\.item/
+    	]
+    });
+
+    xmlText = "<MyArrays>"+
+    		"<test2><item>success</item><item>second</item></test2>"+
+    		"<test3><item>success</item></test3>"+
+    		"<test4><item>success</item></test4>"+
+    		"<test5><item>success</item></test5>"+
+    	"</MyOperation>";
+    
+    	
+    jsonObj = x2js.xml_str2json( xmlText );
+    console.log(jsonObj.MyArrays.test3.item[0]);
+    console.log(jsonObj.MyArrays.test4.item[0]);
+    console.log(jsonObj.MyArrays.test5.item);
 	                    
     console.log(x2js.getVersion());
     

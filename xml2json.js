@@ -63,7 +63,7 @@ function X2JS(config) {
 		return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&#x2F;/g, '\/');
 	}
 	
-	function toArrayAccessForm(obj, childName) {
+	function toArrayAccessForm(obj, childName, path) {
 		switch(config.arrayAccessForm) {
 		case "property":
 			if(!(obj[childName] instanceof Array))
@@ -74,14 +74,38 @@ function X2JS(config) {
 		/*case "none":
 			break;*/
 		}
+		
+		if(!(obj[childName] instanceof Array) && config.arrayAccessFormPaths.length > 0) {
+			var idx = 0;
+			for(; idx < config.arrayAccessFormPaths.length; idx++) {
+				var arrayPath = config.arrayAccessFormPaths[idx];
+				if( typeof arrayPath === "string" ) {
+					if(arrayPath == path)
+						break;
+				}
+				else
+				if( arrayPath instanceof RegExp) {
+					if(arrayPath.test(path))
+						break;
+				}				
+				else
+				if( typeof arrayPath === "function") {
+					if(arrayPath(obj, childName, path))
+						break;
+				}
+			}
+			if(idx!=config.arrayAccessFormPaths.length) {
+				obj[childName] = [obj[childName]];
+			}
+		}
 	}
 
-	function parseDOMChildren( node ) {
+	function parseDOMChildren( node, path ) {
 		if(node.nodeType == DOMNodeTypes.DOCUMENT_NODE) {
 			var result = new Object;
 			var child = node.firstChild; 
 			var childName = getNodeLocalName(child);
-			result[childName] = parseDOMChildren(child);
+			result[childName] = parseDOMChildren(child, childName);
 			return result;
 		}
 		else
@@ -98,17 +122,17 @@ function X2JS(config) {
 				
 				result.__cnt++;
 				if(result[childName] == null) {
-					result[childName] = parseDOMChildren(child);
-					toArrayAccessForm(result, childName);					
+					result[childName] = parseDOMChildren(child, path+"."+childName);
+					toArrayAccessForm(result, childName, path+"."+childName);					
 				}
 				else {
 					if(result[childName] != null) {
 						if( !(result[childName] instanceof Array)) {
 							result[childName] = [result[childName]];
-							toArrayAccessForm(result, childName);
+							toArrayAccessForm(result, childName, path+"."+childName);
 						}
 					}
-					(result[childName])[result[childName].length] = parseDOMChildren(child);
+					(result[childName])[result[childName].length] = parseDOMChildren(child, path+"."+childName);
 				}			
 			}
 			
