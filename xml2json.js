@@ -36,6 +36,7 @@ function X2JS(config) {
 		ELEMENT_NODE 	   : 1,
 		TEXT_NODE    	   : 3,
 		CDATA_SECTION_NODE : 4,
+		COMMENT_NODE	   : 8,
 		DOCUMENT_NODE 	   : 9
 	};
 	
@@ -126,20 +127,22 @@ function X2JS(config) {
 				var child = nodeChildren.item(cidx); // nodeChildren[cidx];
 				var childName = getNodeLocalName(child);
 				
-				result.__cnt++;
-				if(result[childName] == null) {
-					result[childName] = parseDOMChildren(child, path+"."+childName);
-					toArrayAccessForm(result, childName, path+"."+childName);					
-				}
-				else {
-					if(result[childName] != null) {
-						if( !(result[childName] instanceof Array)) {
-							result[childName] = [result[childName]];
-							toArrayAccessForm(result, childName, path+"."+childName);
-						}
+				if(child.nodeType!= DOMNodeTypes.COMMENT_NODE) {
+					result.__cnt++;
+					if(result[childName] == null) {
+						result[childName] = parseDOMChildren(child, path+"."+childName);
+						toArrayAccessForm(result, childName, path+"."+childName);					
 					}
-					(result[childName])[result[childName].length] = parseDOMChildren(child, path+"."+childName);
-				}			
+					else {
+						if(result[childName] != null) {
+							if( !(result[childName] instanceof Array)) {
+								result[childName] = [result[childName]];
+								toArrayAccessForm(result, childName, path+"."+childName);
+							}
+						}
+						(result[childName])[result[childName].length] = parseDOMChildren(child, path+"."+childName);
+					}
+				}								
 			}
 			
 			// Attributes
