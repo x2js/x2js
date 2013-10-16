@@ -15,6 +15,7 @@ $(window).load(function(){
 	    $("#xmlArea").val(x2js.json2xml_str($.parseJSON($("#jsonArea").val())));
 	}
 
+	$("#xmlArea").val("<root><child><textNode>First &amp; Child</textNode></child><child><textNode>Second Child</textNode></child><testAttrs attr1='attr1Value'/></root>");
 	convertXml2JSon();
 	convertJSon2XML();
 	$("#convertToJsonBtn").click(convertXml2JSon);
@@ -28,7 +29,7 @@ $(window).load(function(){
     <button id="convertToXmlBtn">JSON => XML</button>    
     <div>        
         <h4>XML:</h4>
-        <textarea id="xmlArea" cols="55" rows="15"><root><child><textNode>First Child</textNode></child><child><textNode>Second Child</textNode></child><testAttrs attr1='attr1Value'/></root></textarea>
+        <textarea id="xmlArea" cols="55" rows="15"></textarea>
     </div>
     
     <div>
