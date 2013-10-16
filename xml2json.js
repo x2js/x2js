@@ -24,12 +24,19 @@ function X2JS(config) {
 	initConfigDefaults();
 	
 	function initConfigDefaults() {
-		config.escapeMode = config.escapeMode || true;
+		if(config.escapeMode === undefined) {
+			config.escapeMode = true;
+		}
 		config.attributePrefix = config.attributePrefix || "_";
 		config.arrayAccessForm = config.arrayAccessForm || "none";
 		config.emptyNodeForm = config.emptyNodeForm || "text";
-		config.enableToStringFunc = config.enableToStringFunc || true;
+		if(config.enableToStringFunc === undefined) {
+			config.enableToStringFunc = true; 
+		}
 		config.arrayAccessFormPaths = config.arrayAccessFormPaths || []; 
+		if(config.skipEmptyTextNodesForObj === undefined) {
+			config.skipEmptyTextNodesForObj = true;
+		}
 	}
 
 	var DOMNodeTypes = {
@@ -183,6 +190,12 @@ function X2JS(config) {
 			else
 			if( result.__cnt == 0 && config.emptyNodeForm=="text" ) {
 				result = '';
+			}
+			else
+			if ( result.__cnt > 1 && result.__text!=null && config.skipEmptyTextNodesForObj) {
+				if(result.__text.trim()=="") {
+					delete result.__text;
+				}
 			}
 			delete result.__cnt;			
 			
