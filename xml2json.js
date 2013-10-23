@@ -41,7 +41,6 @@ function X2JS(config) {
 		if(config.stripWhitespaces === undefined) {
 			config.stripWhitespaces = true;
 		}
-		
 	}
 	
 	function initRequiredPolyfills() {
