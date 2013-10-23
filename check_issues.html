@@ -12,7 +12,8 @@
     	   function(obj, childName, path) {
     		   return false;
     	   }
-    	]
+    	],
+    	stripWhitespaces : true
     });
 
     var xmlText =
@@ -20,7 +21,7 @@
     "<MyOperation myAttr='SuccessAttrValue'>"+
     "<txtAttrChild sAttr='SUCCESS TXT ATTR CHILD'>SUCCESS TXT<!-- comment --></txtAttrChild><test>Success</test>"+
     "<test2 myAttr='SuccessAttrValueTest2'><item>first</item><item>second</item></test2>"+
-    "<test3><item>first</item></test3>"+
+    "<test3><item>first </item></test3>"+
     "<test4><item>first</item></test4>"+
     "<test5><item>first</item></test5>"+
     "<!-- comment2 -->"+

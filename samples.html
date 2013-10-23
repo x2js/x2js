@@ -38,10 +38,14 @@
     	// You can configure beforehand paths to all your array elements based on XSD or your knowledge
     	// about XML structure
     	// Every path could be a simple string (like 'parent.child1.child2'), a regex (like /.*\.child2/), or a custom function
-	arrayAccessFormPaths : [],
+		arrayAccessFormPaths : [],
 
-	// Skip empty text tags for nodes with children
-	skipEmptyTextNodesForObj : true
+		// Strip whitespaces (trimming text nodes)
+		stripWhitespaces : true,
+		
+		// Skip empty text tags for nodes with children
+		skipEmptyTextNodesForObj : true,
+		
     });
         
     // JSON to DOM

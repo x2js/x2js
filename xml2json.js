@@ -18,10 +18,11 @@
 function X2JS(config) {
 	'use strict';
 		
-	var VERSION = "1.1.3";
+	var VERSION = "1.1.4";
 	
 	config = config || {};
 	initConfigDefaults();
+	initRequiredPolyfills();
 	
 	function initConfigDefaults() {
 		if(config.escapeMode === undefined) {
@@ -37,6 +38,19 @@ function X2JS(config) {
 		if(config.skipEmptyTextNodesForObj === undefined) {
 			config.skipEmptyTextNodesForObj = true;
 		}
+		if(config.stripWhitespaces === undefined) {
+			config.stripWhitespaces = true;
+		}
+		
+	}
+	
+	function initRequiredPolyfills() {
+		if(typeof String.prototype.trim !== 'function') {
+			// Hello IE8-
+			String.prototype.trim = function() {
+				return this.replace(/^\s+|^\n+|(\s|\n)+$/g, '');
+			}
+		}		
 	}
 
 	var DOMNodeTypes = {
@@ -173,6 +187,8 @@ function X2JS(config) {
 				}
 				if(config.escapeMode)
 					result.__text = unescapeXmlChars(result.__text);
+				if(config.stripWhitespaces)
+					result.__text = result.__text.trim();
 				delete result["#text"];
 				if(config.arrayAccessForm=="property")
 					delete result["#text_asArray"];
@@ -193,7 +209,7 @@ function X2JS(config) {
 			}
 			else
 			if ( result.__cnt > 1 && result.__text!=null && config.skipEmptyTextNodesForObj) {
-				if(result.__text.trim()=="") {
+				if( (config.stripWhitespaces && result.__text=="") || (result.__text.trim()=="")) {
 					delete result.__text;
 				}
 			}
