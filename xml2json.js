@@ -214,7 +214,7 @@ function X2JS(config) {
 			}
 			delete result.__cnt;			
 			
-			if( config.enableToStringFunc && result.__text!=null || result.__cdata!=null ) {
+			if( config.enableToStringFunc && (result.__text!=null || result.__cdata!=null )) {
 				result.toString = function() {
 					return (this.__text!=null? this.__text:'')+( this.__cdata!=null ? this.__cdata:'');
 				};
