@@ -285,7 +285,7 @@
             MyRoot : {
                 MyEscapeXmlChild : "<success> & \" ' / </success>",
                 MyEscapeXmlChild2 : {
-                	_attr : "success",
+                	_attr : "success&",
                 	__text : "<success> & \" ' / </success>"
                 },
                 MyEscapeXmlChildNonString : false
@@ -297,6 +297,7 @@
 
     jsonObj = x2js.xml_str2json( xmlDocStr );
     console.log(jsonObj.MyRoot.MyEscapeXmlChild);
+    console.log(jsonObj.MyRoot.MyEscapeXmlChild2._attr);
     console.log(jsonObj.MyRoot.MyEscapeXmlChild2.toString());
     
     // Array access path 

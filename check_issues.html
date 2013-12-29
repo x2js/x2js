@@ -20,7 +20,7 @@
     	"<!-- Test comment -->"+
     "<MyOperation myAttr='SuccessAttrValue'>"+
     "<txtAttrChild sAttr='SUCCESS TXT ATTR CHILD'>SUCCESS TXT<!-- comment --></txtAttrChild><test>Success</test>"+
-    "<test2 myAttr='SuccessAttrValueTest2'><item>first</item><item>second</item></test2>"+
+    "<test2 myAttr='SuccessAttrValueTest2&amp;'><item>first</item><item>second</item></test2>"+
     "<test3><item>first </item></test3>"+
     "<test4><item>first</item></test4>"+
     "<test5><item>first</item></test5>"+
@@ -32,6 +32,8 @@
     console.log(jsonObj.MyOperation.txtAttrChild._sAttr);
     console.log(jsonObj.MyOperation.txtAttrChild.__text);
     console.log(jsonObj.MyOperation.txtAttrChild.toString());
+    
+    console.log( x2js.json2xml_str( jsonObj ) );
     	
 </script>
 </body>
