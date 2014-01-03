@@ -13,7 +13,11 @@
     		   return false;
     	   }
     	],
-    	stripWhitespaces : true
+    	datetimeAccessFormPaths : [
+			"MyOperation.testdt"
+    	],
+    	stripWhitespaces : true,
+    	enableToStringFunc : true
     });
 
     var xmlText =
@@ -24,6 +28,7 @@
     "<test3><item>first </item></test3>"+
     "<test4><item>first</item></test4>"+
     "<test5><item>first</item></test5>"+
+    "<testdt>2002-10-10T12:00:00-05:00</testdt>"+
     "<!-- comment2 -->"+
     "</MyOperation>";
     var jsonObj = x2js.xml_str2json( xmlText );
@@ -32,8 +37,10 @@
     console.log(jsonObj.MyOperation.txtAttrChild._sAttr);
     console.log(jsonObj.MyOperation.txtAttrChild.__text);
     console.log(jsonObj.MyOperation.txtAttrChild.toString());
+    console.log(jsonObj.MyOperation.testdt);
     
     console.log( x2js.json2xml_str( jsonObj ) );
+    
     	
 </script>
 </body>
