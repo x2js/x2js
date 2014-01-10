@@ -482,12 +482,12 @@ function X2JS(config) {
 		if (window.DOMParser) {
 			var parser=new window.DOMParser();			
 			var parsererrorNS = null;
+			// IE9+ now is here
 			if(!isIEParser) {
 				try {
 					parsererrorNS = parser.parseFromString("INVALID", "text/xml").childNodes[0].namespaceURI;
 				}
-				catch(err) {
-					// IE9+ now is here
+				catch(err) {					
 					parsererrorNS = null;
 				}
 			}
