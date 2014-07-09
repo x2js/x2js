@@ -515,6 +515,9 @@ function X2JS(config) {
 	};
 	
 	this.asArray = function(prop) {
+		if (prop === undefined || prop == null)
+			return [];
+		else
 		if(prop instanceof Array)
 			return prop;
 		else
