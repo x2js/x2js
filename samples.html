@@ -395,6 +395,16 @@
     console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test1);
     console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test2);
     
+    // Empty attribute prefix is just fine
+    x2js = new X2JS({
+    	attributePrefix : ""
+    });
+
+    xmlText = "<Root><element attribute1=\"success\">fail</element></Root>";
+    jsonObj = x2js.xml_str2json( xmlText );
+    
+    console.log("empty attribute prefix success?: " + jsonObj.Root.element.attribute1);
+    
     console.log('-- ALL TESTS COMPLETED! --');     
             
 </script>
