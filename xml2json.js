@@ -15,10 +15,12 @@
  limitations under the License.
  */
 
+// This fork is maintained at https://github.com/Axinom/x2js
+
 function X2JS(config) {
 	'use strict';
 		
-	var VERSION = "1.1.7-dev-Axinom";
+	var VERSION = "1.2.0";
 	
 	config = config || {};
 	initConfigDefaults();
