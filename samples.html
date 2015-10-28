@@ -59,8 +59,12 @@
         // If true, the document root element is removed from the output.
         // Instead of accessing result.Book.Title, you will access result.Title.
         // Default is false.
-        ignoreRoot : false
-		
+        ignoreRoot : false,
+        
+        // { test : function(name, value) { return true; }, convert : function(name, value) { return parseFloat(value); } }
+        // convert() will be called for every attribute where test() returns true and the return value from convert()
+        // will replace the original value of tha attribute, as it was parsed 
+        attributeConverters : []
     });
         
     // JSON to DOM
@@ -368,6 +372,28 @@
     jsonObj = x2js.xml_str2json( xmlText );
     
     console.log("ignoreRoot success?: " + jsonObj.testds)
+    
+    // converters should convert but only when appropriate
+    x2js = new X2JS({
+    	attributeConverters : [
+            {
+                test : function(name, value) {
+                    return name === "test1";
+                },
+                convert : function(name, value) {
+                    return "success 1.*";
+                }
+            }
+        ]
+    });
+
+    xmlText = "<Root><element test1=\"FAIL\" test2=\"success 2.1\">first</element><element test1=\"FAIL 1.2\" test2=\"success 2.2\">second</element></Root>";
+    jsonObj = x2js.xml_str2json( xmlText );
+    
+    console.log("converter success 1.1?: " + jsonObj.Root.element[0]._test1);
+    console.log("converter success 2.1?: " + jsonObj.Root.element[0]._test2);
+    console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test1);
+    console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test2);
     
     console.log('-- ALL TESTS COMPLETED! --');     
             

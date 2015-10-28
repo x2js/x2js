@@ -50,6 +50,8 @@ function X2JS(config) {
 		if(config.ignoreRoot == undefined) {
 			config.ignoreRoot = false;
 		}
+		
+		config.attributeConverters = config.attributeConverters || [];
 	}
 
 	var DOMNodeTypes = {
@@ -264,7 +266,15 @@ function X2JS(config) {
 			for(var aidx=0; aidx <node.attributes.length; aidx++) {
 				var attr = node.attributes.item(aidx); // [aidx];
 				result.__cnt++;
-				result[config.attributePrefix+attr.name]=attr.value;
+				
+				var adjustedValue = attr.value;
+				for(var i = 0; i < config.attributeConverters.length; i++) {
+				    var converter = config.attributeConverters[i];
+				    if (converter.test.call(this, attr.name, attr.value))
+				        adjustedValue = converter.convert.call(this, attr.name, attr.value);
+				}
+				
+				result[config.attributePrefix + attr.name] = adjustedValue;
 			}
 			
 			// Node namespace prefix
@@ -298,7 +308,7 @@ function X2JS(config) {
 			if( result.__cnt == 1 && result.__text!=null  ) {
 				result = result.__text;
 			}
-			else
+			else 
 			if( result.__cnt == 0 && config.emptyNodeForm=="text" ) {
 				result = '';
 			}
