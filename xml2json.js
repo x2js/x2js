@@ -46,6 +46,10 @@ function X2JS(config) {
 		if(config.useDoubleQuotes === undefined) {
 			config.useDoubleQuotes = false;
 		}
+		
+		if(config.ignoreRoot == undefined) {
+			config.ignoreRoot = false;
+		}
 	}
 
 	var DOMNodeTypes = {
@@ -217,7 +221,11 @@ function X2JS(config) {
 				var child = nodeChildren.item(cidx);
 				if(child.nodeType == DOMNodeTypes.ELEMENT_NODE) {
 					var childName = getNodeLocalName(child);
-					result[childName] = parseDOMChildren(child, childName);
+					
+					if(config.ignoreRoot)
+						result = parseDOMChildren(child, childName);
+					else
+						result[childName] = parseDOMChildren(child, childName);
 				}
 			}
 			return result;
