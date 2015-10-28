@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="xml2json.min.js"></script>
-    <!-- script type="text/javascript" src="xml2json.js"></script-->
+    <script type="text/javascript" src="xml2json.js"></script>
 </head>
 <body>
 <h1>X2JS samples html</h1>
@@ -55,8 +54,17 @@
     	// about XML structure
     	// Every path could be a simple string (like 'parent.child1.child2'), a regex (like /.*\.child2/), or a custom function
     	// Default is empty array
-		datetimeAccessFormPaths : []
-		
+		datetimeAccessFormPaths : [],
+        
+        // If true, the document root element is removed from the output.
+        // Instead of accessing result.Book.Title, you will access result.Title.
+        // Default is false.
+        ignoreRoot : false,
+        
+        // { test : function(name, value) { return true; }, convert : function(name, value) { return parseFloat(value); } }
+        // convert() will be called for every attribute where test() returns true and the return value from convert()
+        // will replace the original value of tha attribute, as it was parsed 
+        attributeConverters : []
     });
         
     // JSON to DOM
@@ -354,6 +362,48 @@
     console.log(x2js.asDateTime( jsonObj.MyDts.testdc ));
 	                    
     console.log(x2js.getVersion());
+    
+     // ignoreRoot should drop the root element from the output
+    x2js = new X2JS({
+    	ignoreRoot : true
+    });
+
+    xmlText = "<MyDts><testds>success</testds></MyDts>";
+    jsonObj = x2js.xml_str2json( xmlText );
+    
+    console.log("ignoreRoot success?: " + jsonObj.testds)
+    
+    // converters should convert but only when appropriate
+    x2js = new X2JS({
+    	attributeConverters : [
+            {
+                test : function(name, value) {
+                    return name === "test1";
+                },
+                convert : function(name, value) {
+                    return "success 1.*";
+                }
+            }
+        ]
+    });
+
+    xmlText = "<Root><element test1=\"FAIL\" test2=\"success 2.1\">first</element><element test1=\"FAIL 1.2\" test2=\"success 2.2\">second</element></Root>";
+    jsonObj = x2js.xml_str2json( xmlText );
+    
+    console.log("converter success 1.1?: " + jsonObj.Root.element[0]._test1);
+    console.log("converter success 2.1?: " + jsonObj.Root.element[0]._test2);
+    console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test1);
+    console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test2);
+    
+    // Empty attribute prefix is just fine
+    x2js = new X2JS({
+    	attributePrefix : ""
+    });
+
+    xmlText = "<Root><element attribute1=\"success\">fail</element></Root>";
+    jsonObj = x2js.xml_str2json( xmlText );
+    
+    console.log("empty attribute prefix success?: " + jsonObj.Root.element.attribute1);
     
     console.log('-- ALL TESTS COMPLETED! --');     
             

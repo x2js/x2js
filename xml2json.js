@@ -15,10 +15,12 @@
  limitations under the License.
  */
 
+// This fork is maintained at https://github.com/Axinom/x2js
+
 function X2JS(config) {
 	'use strict';
 		
-	var VERSION = "1.1.7";
+	var VERSION = "1.2.0";
 	
 	config = config || {};
 	initConfigDefaults();
@@ -28,7 +30,9 @@ function X2JS(config) {
 		if(config.escapeMode === undefined) {
 			config.escapeMode = true;
 		}
-		config.attributePrefix = config.attributePrefix || "_";
+		if(config.attributePrefix === undefined) {
+			config.attributePrefix = "_";
+		}
 		config.arrayAccessForm = config.arrayAccessForm || "none";
 		config.emptyNodeForm = config.emptyNodeForm || "text";
 		if(config.enableToStringFunc === undefined) {
@@ -46,6 +50,12 @@ function X2JS(config) {
 		if(config.useDoubleQuotes === undefined) {
 			config.useDoubleQuotes = false;
 		}
+		
+		if(config.ignoreRoot == undefined) {
+			config.ignoreRoot = false;
+		}
+		
+		config.attributeConverters = config.attributeConverters || [];
 	}
 
 	var DOMNodeTypes = {
@@ -217,7 +227,11 @@ function X2JS(config) {
 				var child = nodeChildren.item(cidx);
 				if(child.nodeType == DOMNodeTypes.ELEMENT_NODE) {
 					var childName = getNodeLocalName(child);
-					result[childName] = parseDOMChildren(child, childName);
+					
+					if(config.ignoreRoot)
+						result = parseDOMChildren(child, childName);
+					else
+						result[childName] = parseDOMChildren(child, childName);
 				}
 			}
 			return result;
@@ -256,7 +270,15 @@ function X2JS(config) {
 			for(var aidx=0; aidx <node.attributes.length; aidx++) {
 				var attr = node.attributes.item(aidx); // [aidx];
 				result.__cnt++;
-				result[config.attributePrefix+attr.name]=attr.value;
+				
+				var adjustedValue = attr.value;
+				for(var i = 0; i < config.attributeConverters.length; i++) {
+				    var converter = config.attributeConverters[i];
+				    if (converter.test.call(this, attr.name, attr.value))
+				        adjustedValue = converter.convert.call(this, attr.name, attr.value);
+				}
+				
+				result[config.attributePrefix + attr.name] = adjustedValue;
 			}
 			
 			// Node namespace prefix
@@ -290,7 +312,7 @@ function X2JS(config) {
 			if( result.__cnt == 1 && result.__text!=null  ) {
 				result = result.__text;
 			}
-			else
+			else 
 			if( result.__cnt == 0 && config.emptyNodeForm=="text" ) {
 				result = '';
 			}
