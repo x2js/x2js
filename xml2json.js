@@ -24,29 +24,25 @@ function X2JS(config) {
 	var VERSION = "1.3.0-dev";
 
 	config = config || {};
-	initConfigDefaults();
-	initRequiredPolyfills();
 
 	function initConfigDefaults() {
-		if (config.escapeMode === undefined) {
-			config.escapeMode = true;
-		}
-		if (config.attributePrefix === undefined) {
-			config.attributePrefix = "_";
-		}
 		config.arrayAccessForm = config.arrayAccessForm || "none";
 		config.emptyNodeForm = config.emptyNodeForm || "text";
+		config.attributeConverters = config.attributeConverters || [];
+		config.datetimeAccessFormPaths = config.datetimeAccessFormPaths || [];
+		config.arrayAccessFormPaths = config.arrayAccessFormPaths || [];
+
 		if (config.enableToStringFunc === undefined) {
 			config.enableToStringFunc = true;
 		}
-		config.arrayAccessFormPaths = config.arrayAccessFormPaths || [];
+
 		if (config.skipEmptyTextNodesForObj === undefined) {
 			config.skipEmptyTextNodesForObj = true;
 		}
+
 		if (config.stripWhitespaces === undefined) {
 			config.stripWhitespaces = true;
 		}
-		config.datetimeAccessFormPaths = config.datetimeAccessFormPaths || [];
 
 		if (config.useDoubleQuotes === undefined) {
 			config.useDoubleQuotes = false;
@@ -56,16 +52,14 @@ function X2JS(config) {
 			config.ignoreRoot = false;
 		}
 
-		config.attributeConverters = config.attributeConverters || [];
-	}
+		if (config.escapeMode === undefined) {
+			config.escapeMode = true;
+		}
 
-	var DOMNodeTypes = {
-		ELEMENT_NODE: 1,
-		TEXT_NODE: 3,
-		CDATA_SECTION_NODE: 4,
-		COMMENT_NODE: 8,
-		DOCUMENT_NODE: 9
-	};
+		if (config.attributePrefix === undefined) {
+			config.attributePrefix = "_";
+		}
+	}
 
 	function initRequiredPolyfills() {
 		function pad(number) {
@@ -77,31 +71,48 @@ function X2JS(config) {
 		}
 		// Hello IE8-
 		if (typeof String.prototype.trim !== 'function') {
-			String.prototype.trim = function () {
+			String.prototype.trim = function trim() {
 				return this.replace(/^\s+|^\n+|(\s|\n)+$/g, '');
 			};
 		}
 		if (typeof Date.prototype.toISOString !== 'function') {
 			// Implementation from http://stackoverflow.com/questions/2573521/how-do-i-output-an-iso-8601-formatted-string-in-javascript
-			Date.prototype.toISOString = function () {
+			Date.prototype.toISOString = function toISOString() {
+				var MS_IN_S = 1000;
+
 				return this.getUTCFullYear()
 					+ '-' + pad(this.getUTCMonth() + 1)
 					+ '-' + pad(this.getUTCDate())
 					+ 'T' + pad(this.getUTCHours())
 					+ ':' + pad(this.getUTCMinutes())
 					+ ':' + pad(this.getUTCSeconds())
-					+ '.' + String((this.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5)
+					+ '.' + String((this.getUTCMilliseconds() / MS_IN_S).toFixed(3)).slice(2, 5)
 					+ 'Z';
 			};
 		}
 	}
 
+	initConfigDefaults();
+	initRequiredPolyfills();
+
+	var DOMNodeTypes = {
+		"ELEMENT_NODE": 1,
+		"TEXT_NODE": 3,
+		"CDATA_SECTION_NODE": 4,
+		"COMMENT_NODE": 8,
+		"DOCUMENT_NODE": 9
+	};
+
 	function getNodeLocalName(node) {
 		var nodeLocalName = node.localName;
-		if (nodeLocalName == null) // Yeah, this is IE!!
+		if (nodeLocalName == null) {
+			// Yeah, this is IE!!
 			nodeLocalName = node.baseName;
-		if (nodeLocalName == null || nodeLocalName === "") // ==="" is IE too
+		}
+		if (nodeLocalName == null || nodeLocalName === "") {
+			// ==="" is IE too
 			nodeLocalName = node.nodeName;
+		}
 		return nodeLocalName;
 	}
 
@@ -110,7 +121,7 @@ function X2JS(config) {
 	}
 
 	function escapeXmlChars(str) {
-		if (typeof (str) === "string")
+		if (typeof str === "string")
 			return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
 		else
 			return str;
@@ -135,19 +146,15 @@ function X2JS(config) {
 			for (; idx < config.arrayAccessFormPaths.length; idx++) {
 				var arrayPath = config.arrayAccessFormPaths[idx];
 				if (typeof arrayPath === "string") {
-					if (arrayPath == path)
+					if (arrayPath === path)
+						break;
+				} else if (arrayPath instanceof RegExp) {
+					if (arrayPath.test(path))
+						break;
+				} else if (typeof arrayPath === "function") {
+					if (arrayPath(obj, childName, path))
 						break;
 				}
-				else
-					if (arrayPath instanceof RegExp) {
-						if (arrayPath.test(path))
-							break;
-					}
-					else
-						if (typeof arrayPath === "function") {
-							if (arrayPath(obj, childName, path))
-								break;
-						}
 			}
 			if (idx !== config.arrayAccessFormPaths.length) {
 				obj[childName] = [obj[childName]];
@@ -158,6 +165,8 @@ function X2JS(config) {
 	function fromXmlDateTime(prop) {
 		// Implementation based up on http://stackoverflow.com/questions/8178598/xml-datetime-to-javascript-date-object
 		// Improved to support full spec and optional parts
+		var MINUTES_PER_HOUR = 60;
+
 		var bits = prop.split(/[-T:+Z]/g);
 
 		var d = new Date(bits[0], bits[1] - 1, bits[2]);
@@ -168,19 +177,17 @@ function X2JS(config) {
 
 		// Get supplied time zone offset in minutes
 		if (bits[6] && bits[7]) {
-			var offsetMinutes = bits[6] * 60 + Number(bits[7]);
+			var offsetMinutes = bits[6] * MINUTES_PER_HOUR + Number(bits[7]);
 			var sign = /\d\d-\d\d:\d\d$/.test(prop) ? '-' : '+';
 
 			// Apply the sign
-			offsetMinutes = 0 + (sign == '-' ? -1 * offsetMinutes : offsetMinutes);
+			offsetMinutes = 0 + (sign === '-' ? -1 * offsetMinutes : offsetMinutes);
 
 			// Apply offset and local timezone
-			d.setMinutes(d.getMinutes() - offsetMinutes - d.getTimezoneOffset())
+			d.setMinutes(d.getMinutes() - offsetMinutes - d.getTimezoneOffset());
+		} else if (prop.indexOf("Z", prop.length - 1) !== -1) {
+			d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()));
 		}
-		else
-			if (prop.indexOf("Z", prop.length - 1) !== -1) {
-				d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()));
-			}
 
 		// d is now a local time equivalent to the supplied time
 		return d;
@@ -195,12 +202,10 @@ function X2JS(config) {
 				if (typeof dtPath === "string") {
 					if (dtPath === path)
 						break;
-				}
-				else if (dtPath instanceof RegExp) {
+				} else if (dtPath instanceof RegExp) {
 					if (dtPath.test(path))
 						break;
-				}
-				else if (typeof dtPath === "function") {
+				} else if (typeof dtPath === "function") {
 					if (dtPath(value, childName, path))
 						break;
 				}
@@ -216,7 +221,7 @@ function X2JS(config) {
 	}
 
 	function parseDOMRootNodeChildren(node) {
-		var result = new Object;
+		var result = {};
 		var nodeChildren = node.childNodes;
 
 		// Alternative for firstElementChild which is not supported in some environments
@@ -236,7 +241,7 @@ function X2JS(config) {
 	}
 
 	function parseDOMElementNodeChildren(node, path) {
-		var result = new Object;
+		var result = {};
 		result.__cnt = 0;
 
 		var nodeChildren = node.childNodes;
@@ -251,15 +256,14 @@ function X2JS(config) {
 				if (!result[childName]) {
 					result[childName] = parseDOMChildren(child, path + "." + childName);
 					toArrayAccessForm(result, childName, path + "." + childName);
-				}
-				else {
+				} else {
 					if (result[childName]) {
 						if (!(result[childName] instanceof Array)) {
 							result[childName] = [result[childName]];
 							toArrayAccessForm(result, childName, path + "." + childName);
 						}
 					}
-					(result[childName])[result[childName].length] = parseDOMChildren(child, path + "." + childName);
+					result[childName][result[childName].length] = parseDOMChildren(child, path + "." + childName);
 				}
 			}
 		}
@@ -272,8 +276,8 @@ function X2JS(config) {
 			var adjustedValue = attr.value;
 			for (var i = 0; i < config.attributeConverters.length; i++) {
 				var converter = config.attributeConverters[i];
-				if (converter.test.call(this, attr.name, attr.value))
-					adjustedValue = converter.convert.call(this, attr.name, attr.value);
+				if (converter.test.call(null, attr.name, attr.value))
+					adjustedValue = converter.convert.call(null, attr.name, attr.value);
 			}
 
 			result[config.attributePrefix + attr.name] = adjustedValue;
@@ -297,10 +301,10 @@ function X2JS(config) {
 				result.__text = result.__text.trim();
 			delete result["#text"];
 
-			if (config.arrayAccessForm == "property")
+			if (config.arrayAccessForm === "property")
 				delete result["#text_asArray"];
 
-			result.__text = checkFromXmlDateTimePaths(result.__text, childName, path + "." + childName);
+			result.__text = checkFromXmlDateTimePaths(result.__text, "#text", path + ".#text");
 		}
 
 		if (result["#cdata-section"]) {
@@ -313,19 +317,17 @@ function X2JS(config) {
 
 		if (result.__cnt === 1 && result.__text) {
 			result = result.__text;
-		}
-		else if (result.__cnt === 0 && config.emptyNodeForm === "text") {
+		} else if (result.__cnt === 0 && config.emptyNodeForm === "text") {
 			result = '';
-		}
-		else if (result.__cnt > 1 && result.__text !== undefined && config.skipEmptyTextNodesForObj) {
-			if ((config.stripWhitespaces && result.__text === "") || (result.__text.trim() === "")) {
+		} else if (result.__cnt > 1 && result.__text !== undefined && config.skipEmptyTextNodesForObj) {
+			if (config.stripWhitespaces && result.__text === "" || result.__text.trim() === "") {
 				delete result.__text;
 			}
 		}
 		delete result.__cnt;
 
 		if (config.enableToStringFunc && (result.__text || result.__cdata)) {
-			result.toString = function () {
+			result.toString = function toString() {
 				return (this.__text ? this.__text : '') + (this.__cdata ? this.__cdata : '');
 			};
 		}
@@ -336,11 +338,9 @@ function X2JS(config) {
 	function parseDOMChildren(node, path) {
 		if (node.nodeType === DOMNodeTypes.DOCUMENT_NODE) {
 			return parseDOMRootNodeChildren(node);
-		}
-		else if (node.nodeType === DOMNodeTypes.ELEMENT_NODE) {
+		} else if (node.nodeType === DOMNodeTypes.ELEMENT_NODE) {
 			return parseDOMElementNodeChildren(node, path);
-		}
-		else if (node.nodeType === DOMNodeTypes.TEXT_NODE || node.nodeType === DOMNodeTypes.CDATA_SECTION_NODE) {
+		} else if (node.nodeType === DOMNodeTypes.TEXT_NODE || node.nodeType === DOMNodeTypes.CDATA_SECTION_NODE) {
 			return node.nodeValue;
 		}
 	}
@@ -437,8 +437,7 @@ function X2JS(config) {
 
 		if (jsonTxtObj instanceof Object) {
 			result += parseJSONTextAttrs(jsonTxtObj);
-		}
-		else if (jsonTxtObj) {
+		} else if (jsonTxtObj) {
 			if (config.escapeMode)
 				result += escapeXmlChars(jsonTxtObj);
 			else
@@ -452,14 +451,14 @@ function X2JS(config) {
 		var result = "";
 		if (jsonArrRoot.length === 0) {
 			result += startTag(jsonArrRoot, jsonArrObj, attrList, true);
-		}
-		else {
+		} else {
 			for (var arIdx = 0; arIdx < jsonArrRoot.length; arIdx++) {
 				result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false);
 				result += parseJSONObject(jsonArrRoot[arIdx]);
 				result += endTag(jsonArrRoot[arIdx], jsonArrObj);
 			}
 		}
+
 		return result;
 	}
 
@@ -479,29 +478,24 @@ function X2JS(config) {
 
 				if (subObj === undefined || subObj === null) {
 					result += startTag(subObj, it, attrList, true);
-				}
-				else if (subObj instanceof Object) {
+				} else if (subObj instanceof Object) {
 					if (subObj instanceof Array) {
 						result += parseJSONArray(subObj, it, attrList);
-					}
-					else if (subObj instanceof Date) {
+					} else if (subObj instanceof Date) {
 						result += startTag(subObj, it, attrList, false);
 						result += subObj.toISOString();
 						result += endTag(subObj, it);
-					}
-					else {
+					} else {
 						var subObjElementsCnt = jsonXmlElemCount(subObj);
 						if (subObjElementsCnt > 0 || subObj.__text || subObj.__cdata) {
 							result += startTag(subObj, it, attrList, false);
 							result += parseJSONObject(subObj);
 							result += endTag(subObj, it);
-						}
-						else {
+						} else {
 							result += startTag(subObj, it, attrList, true);
 						}
 					}
-				}
-				else {
+				} else {
 					result += startTag(subObj, it, attrList, false);
 					result += parseJSONTextObject(subObj);
 					result += endTag(subObj, it);
@@ -514,36 +508,34 @@ function X2JS(config) {
 		return result;
 	}
 
-	this.parseXmlString = function (xmlDocStr) {
+	this.parseXmlString = function parseXmlString(xmlDocStr) {
 		var isIEParser = window.ActiveXObject || "ActiveXObject" in window;
 		if (xmlDocStr === undefined) {
 			return null;
 		}
-		var xmlDoc;
+		var xmlDoc = null;
 		if (window.DOMParser) {
 			var parser = new window.DOMParser();
 			var parsererrorNS = null;
+
 			// IE9+ now is here
 			if (!isIEParser) {
 				try {
 					parsererrorNS = parser.parseFromString("INVALID", "text/xml").childNodes[0].namespaceURI;
-				}
-				catch (err) {
+				} catch (err) {
 					parsererrorNS = null;
 				}
 			}
+
 			try {
 				xmlDoc = parser.parseFromString(xmlDocStr, "text/xml");
 				if (parsererrorNS !== null && xmlDoc.getElementsByTagNameNS(parsererrorNS, "parsererror").length > 0) {
-					//throw new Error('Error parsing XML: '+xmlDocStr);
 					xmlDoc = null;
 				}
-			}
-			catch (err) {
+			} catch (err) {
 				xmlDoc = null;
 			}
-		}
-		else {
+		} else {
 			// IE :(
 			if (xmlDocStr.indexOf("<?") === 0) {
 				xmlDocStr = xmlDocStr.substr(xmlDocStr.indexOf("?>") + 2);
@@ -554,10 +546,11 @@ function X2JS(config) {
 			xmlDoc.async = "false";
 			xmlDoc.loadXML(xmlDocStr);
 		}
+
 		return xmlDoc;
 	};
 
-	this.asArray = function (prop) {
+	this.asArray = function asArray(prop) {
 		if (prop === undefined || prop === null)
 			return [];
 		else
@@ -567,30 +560,39 @@ function X2JS(config) {
 				return [prop];
 	};
 
-	this.toXmlDateTime = function (dt) {
-		if (dt instanceof Date)
+	this.toXmlDateTime = function toXmlDateTime(dt) {
+		if (dt instanceof Date) {
 			return dt.toISOString();
-		else
-			if (typeof (dt) === 'number')
-				return new Date(dt).toISOString();
-			else
-				return null;
+		} else if (typeof (dt) === 'number') {
+			return new Date(dt).toISOString();
+		} else {
+			return null;
+		}
 	};
 
-	this.asDateTime = function (prop) {
+	this.asDateTime = function asDateTime(prop) {
 		if (typeof (prop) === "string") {
 			return fromXmlDateTime(prop);
-		}
-		else {
+		} else {
 			return prop;
 		}
 	};
 
-	this.xml2json = function (xmlDoc) {
+	this.xml2json = function xml2json(xmlDoc) {
 		return parseDOMChildren(xmlDoc, null);
 	};
 
-	this.xml_str2json = function (xmlDocStr) {
+	this.json2xml = function json2xml(jsonObj) {
+		var xmlDocStr = this.json2xml_str(jsonObj);
+		return this.parseXmlString(xmlDocStr);
+	};
+
+	this.getVersion = function getVersion() {
+		return VERSION;
+	};
+
+	/* eslint camelcase: 0 */
+	this.xml_str2json = function xml_str2json(xmlDocStr) {
 		var xmlDoc = this.parseXmlString(xmlDocStr);
 		if (xmlDoc !== null)
 			return this.xml2json(xmlDoc);
@@ -598,16 +600,7 @@ function X2JS(config) {
 			return null;
 	};
 
-	this.json2xml_str = function (jsonObj) {
+	this.json2xml_str = function json2xml_str(jsonObj) {
 		return parseJSONObject(jsonObj);
-	};
-
-	this.json2xml = function (jsonObj) {
-		var xmlDocStr = this.json2xml_str(jsonObj);
-		return this.parseXmlString(xmlDocStr);
-	};
-
-	this.getVersion = function () {
-		return VERSION;
 	};
 }
