@@ -98,9 +98,9 @@ function X2JS(config) {
 
 	function getNodeLocalName(node) {
 		var nodeLocalName = node.localName;
-		if (nodeLocalName === null) // Yeah, this is IE!!
+		if (nodeLocalName == null) // Yeah, this is IE!!
 			nodeLocalName = node.baseName;
-		if (nodeLocalName === null || nodeLocalName === "") // =="" is IE too
+		if (nodeLocalName == null || nodeLocalName === "") // ==="" is IE too
 			nodeLocalName = node.nodeName;
 		return nodeLocalName;
 	}
@@ -231,6 +231,7 @@ function X2JS(config) {
 					result[childName] = parseDOMChildren(child, childName);
 			}
 		}
+
 		return result;
 	}
 
@@ -247,12 +248,12 @@ function X2JS(config) {
 
 			if (child.nodeType !== DOMNodeTypes.COMMENT_NODE) {
 				result.__cnt++;
-				if (result[childName] === null) {
+				if (!result[childName]) {
 					result[childName] = parseDOMChildren(child, path + "." + childName);
 					toArrayAccessForm(result, childName, path + "." + childName);
 				}
 				else {
-					if (result[childName] !== null) {
+					if (result[childName]) {
 						if (!(result[childName] instanceof Array)) {
 							result[childName] = [result[childName]];
 							toArrayAccessForm(result, childName, path + "." + childName);
@@ -280,12 +281,12 @@ function X2JS(config) {
 
 		// Node namespace prefix
 		var nodePrefix = getNodePrefix(node);
-		if (nodePrefix !== null && nodePrefix !== "") {
+		if (nodePrefix) {
 			result.__cnt++;
 			result.__prefix = nodePrefix;
 		}
 
-		if (result["#text"] !== null) {
+		if (result["#text"]) {
 			result.__text = result["#text"];
 			if (result.__text instanceof Array) {
 				result.__text = result.__text.join("\n");
@@ -295,33 +296,37 @@ function X2JS(config) {
 			if (config.stripWhitespaces)
 				result.__text = result.__text.trim();
 			delete result["#text"];
+
 			if (config.arrayAccessForm == "property")
 				delete result["#text_asArray"];
+
 			result.__text = checkFromXmlDateTimePaths(result.__text, childName, path + "." + childName);
 		}
-		if (result["#cdata-section"] !== null) {
+
+		if (result["#cdata-section"]) {
 			result.__cdata = result["#cdata-section"];
 			delete result["#cdata-section"];
+
 			if (config.arrayAccessForm === "property")
 				delete result["#cdata-section_asArray"];
 		}
 
-		if (result.__cnt === 1 && result.__text !== null) {
+		if (result.__cnt === 1 && result.__text) {
 			result = result.__text;
 		}
 		else if (result.__cnt === 0 && config.emptyNodeForm === "text") {
 			result = '';
 		}
-		else if (result.__cnt > 1 && result.__text != null && config.skipEmptyTextNodesForObj) {
-			if ((config.stripWhitespaces && result.__text == "") || (result.__text.trim() == "")) {
+		else if (result.__cnt > 1 && result.__text !== undefined && config.skipEmptyTextNodesForObj) {
+			if ((config.stripWhitespaces && result.__text === "") || (result.__text.trim() === "")) {
 				delete result.__text;
 			}
 		}
 		delete result.__cnt;
 
-		if (config.enableToStringFunc && (result.__text !== null || result.__cdata !== null)) {
+		if (config.enableToStringFunc && (result.__text || result.__cdata)) {
 			result.toString = function () {
-				return (this.__text !== null ? this.__text : '') + (this.__cdata !== null ? this.__cdata : '');
+				return (this.__text ? this.__text : '') + (this.__cdata ? this.__cdata : '');
 			};
 		}
 
@@ -341,29 +346,35 @@ function X2JS(config) {
 	}
 
 	function startTag(jsonObj, element, attrList, closed) {
-		var resultStr = "<" + ((jsonObj !== null && jsonObj.__prefix !== null) ? (jsonObj.__prefix + ":") : "") + element;
-		if (attrList !== null) {
+		var resultStr = "<" + ((jsonObj && jsonObj.__prefix) ? (jsonObj.__prefix + ":") : "") + element;
+
+		if (attrList) {
 			for (var aidx = 0; aidx < attrList.length; aidx++) {
 				var attrName = attrList[aidx];
 				var attrVal = jsonObj[attrName];
+
 				if (config.escapeMode)
 					attrVal = escapeXmlChars(attrVal);
+
 				resultStr += " " + attrName.substr(config.attributePrefix.length) + "=";
+
 				if (config.useDoubleQuotes)
 					resultStr += '"' + attrVal + '"';
 				else
 					resultStr += "'" + attrVal + "'";
 			}
 		}
+
 		if (!closed)
 			resultStr += ">";
 		else
 			resultStr += "/>";
+
 		return resultStr;
 	}
 
 	function endTag(jsonObj, elementName) {
-		return "</" + (jsonObj.__prefix !== null ? (jsonObj.__prefix + ":") : "") + elementName + ">";
+		return "</" + ((jsonObj && jsonObj.__prefix) ? (jsonObj.__prefix + ":") : "") + elementName + ">";
 	}
 
 	function endsWith(str, suffix) {
@@ -407,11 +418,11 @@ function X2JS(config) {
 	function parseJSONTextAttrs(jsonTxtObj) {
 		var result = "";
 
-		if (jsonTxtObj.__cdata !== null) {
+		if (jsonTxtObj.__cdata) {
 			result += "<![CDATA[" + jsonTxtObj.__cdata + "]]>";
 		}
 
-		if (jsonTxtObj.__text !== null) {
+		if (jsonTxtObj.__text) {
 			if (config.escapeMode)
 				result += escapeXmlChars(jsonTxtObj.__text);
 			else
@@ -427,7 +438,7 @@ function X2JS(config) {
 		if (jsonTxtObj instanceof Object) {
 			result += parseJSONTextAttrs(jsonTxtObj);
 		}
-		else if (jsonTxtObj !== null) {
+		else if (jsonTxtObj) {
 			if (config.escapeMode)
 				result += escapeXmlChars(jsonTxtObj);
 			else
@@ -459,7 +470,6 @@ function X2JS(config) {
 
 		if (elementsCnt > 0) {
 			for (var it in jsonObj) {
-
 				if (jsonXmlSpecialElem(jsonObj, it))
 					continue;
 
@@ -467,39 +477,38 @@ function X2JS(config) {
 
 				var attrList = parseJSONAttributes(subObj);
 
-				if (subObj === null || subObj === undefined) {
+				if (subObj === undefined || subObj === null) {
 					result += startTag(subObj, it, attrList, true);
 				}
-				else
-					if (subObj instanceof Object) {
-
-						if (subObj instanceof Array) {
-							result += parseJSONArray(subObj, it, attrList);
-						}
-						else if (subObj instanceof Date) {
+				else if (subObj instanceof Object) {
+					if (subObj instanceof Array) {
+						result += parseJSONArray(subObj, it, attrList);
+					}
+					else if (subObj instanceof Date) {
+						result += startTag(subObj, it, attrList, false);
+						result += subObj.toISOString();
+						result += endTag(subObj, it);
+					}
+					else {
+						var subObjElementsCnt = jsonXmlElemCount(subObj);
+						if (subObjElementsCnt > 0 || subObj.__text || subObj.__cdata) {
 							result += startTag(subObj, it, attrList, false);
-							result += subObj.toISOString();
+							result += parseJSONObject(subObj);
 							result += endTag(subObj, it);
 						}
 						else {
-							var subObjElementsCnt = jsonXmlElemCount(subObj);
-							if (subObjElementsCnt > 0 || subObj.__text !== null || subObj.__cdata !== null) {
-								result += startTag(subObj, it, attrList, false);
-								result += parseJSONObject(subObj);
-								result += endTag(subObj, it);
-							}
-							else {
-								result += startTag(subObj, it, attrList, true);
-							}
+							result += startTag(subObj, it, attrList, true);
 						}
 					}
-					else {
-						result += startTag(subObj, it, attrList, false);
-						result += parseJSONTextObject(subObj);
-						result += endTag(subObj, it);
-					}
+				}
+				else {
+					result += startTag(subObj, it, attrList, false);
+					result += parseJSONTextObject(subObj);
+					result += endTag(subObj, it);
+				}
 			}
 		}
+
 		result += parseJSONTextObject(jsonObj);
 
 		return result;
