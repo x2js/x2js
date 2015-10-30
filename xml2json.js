@@ -19,7 +19,6 @@
 
 this.X2JS = function X2JS(config) {
 	'use strict';
-
 	var VERSION = "1.3.0-dev";
 
 	config = config || {};
