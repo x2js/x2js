@@ -17,8 +17,7 @@
 
 // This fork is maintained at https://github.com/Axinom/x2js
 
-/* exported X2JS */
-function X2JS(config) {
+this.X2JS = function X2JS(config) {
 	'use strict';
 
 	var VERSION = "1.3.0-dev";
@@ -603,4 +602,4 @@ function X2JS(config) {
 	this.json2xml_str = function json2xml_str(jsonObj) {
 		return parseJSONObject(jsonObj);
 	};
-}
+};
