@@ -28,7 +28,8 @@ module.exports = function karmaExports(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        "reporters": ['progress'],
+        // 'progress' reports wrong totals on Travis CI, so just use dots
+        "reporters": ['dots'],
 
         // web server port
         "port": 9876,
