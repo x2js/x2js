@@ -24,36 +24,65 @@ this.X2JS = function X2JS(config) {
 	config = config || {};
 
 	function initConfigDefaults() {
+		// If set to "property" then <element>_asArray will be created
+		// to allow you to access any element as an array (even if there is only one of it).
 		config.arrayAccessForm = config.arrayAccessForm || "none";
+
+		// If "text" then <empty></empty> will be transformed to "".
+		// If "object" then <empty></empty> will be transformed to {}.
 		config.emptyNodeForm = config.emptyNodeForm || "text";
+
+		// Allows attribute values to be converted on the fly during parsing to objects.
+		// 	"test": function(name, value) { return true; }
+		//	"convert": function(name, value) { return parseFloat(value);
+        // convert() will be called for every attribute where test() returns true
+		// and the return value from convert() will replace the original value of the attribute.
 		config.attributeConverters = config.attributeConverters || [];
+
+		// Any elements that match the paths here will have their text parsed
+		// as an XML datetime value (2011-11-12T13:00:00-07:00 style).
+		// The path can be a plain string (parent.child1.child2),
+		// a regex (/.*\.child2/) or function(childName, parentPath).
 		config.datetimeAccessFormPaths = config.datetimeAccessFormPaths || [];
+
+		// Any elements that match the paths listed here will be stored in JavaScript objects
+		// as arrays even if there is only one of them. The path can be a plain string
+		// (parent.child1.child2), a regex (/.*\.child2/) or function(childName, parentPath).
 		config.arrayAccessFormPaths = config.arrayAccessFormPaths || [];
 
+		// If true, a toString function is generated to print nodes containing text or cdata.
+		// Useful if you want to accept both plain text and CData as equivalent inputs.
 		if (config.enableToStringFunc === undefined) {
 			config.enableToStringFunc = true;
 		}
 
+		// If true, empty text tags are ignored for elements with child nodes.
 		if (config.skipEmptyTextNodesForObj === undefined) {
 			config.skipEmptyTextNodesForObj = true;
 		}
 
+		// If true, whitespace is trimmed from text nodes.
 		if (config.stripWhitespaces === undefined) {
 			config.stripWhitespaces = true;
 		}
 
+		// If true, double quotes are used in generated XML.
 		if (config.useDoubleQuotes === undefined) {
 			config.useDoubleQuotes = false;
 		}
 
+		// If true, the root element of the XML document is ignored when converting to objects.
+		// The result will directly have the root element's children as its own properties.
 		if (config.ignoreRoot === undefined) {
 			config.ignoreRoot = false;
 		}
 
+		// Whether XML characters in text are escaped when creating XML.
 		if (config.escapeMode === undefined) {
 			config.escapeMode = true;
 		}
 
+		// Prefix to use for properties that are created to represent XML attributes.
 		if (config.attributePrefix === undefined) {
 			config.attributePrefix = "_";
 		}
@@ -150,7 +179,7 @@ this.X2JS = function X2JS(config) {
 					if (arrayPath.test(path))
 						break;
 				} else if (typeof arrayPath === "function") {
-					if (arrayPath(obj, childName, path))
+					if (arrayPath(null, childName, path))
 						break;
 				}
 			}

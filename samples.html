@@ -7,66 +7,9 @@
 <h1>X2JS samples html</h1>
 
 <script type="text/javascript">
-
     // Create x2js instance with default config
     var x2js = new X2JS();
-	
-    // Available options
-    var x2jsOptionsSample = new X2JS({
-    	// Escaping XML characters. Default is true from v1.1.0+
-    	escapeMode : true, 				
-    	// XML attributes prefix. Default is "_"
-    	attributePrefix : "_",
-    	
-    	// Array access form (none|property). 
-    	// Use this property if you want X2JS generate additional property <element>_asArray 
-    	// to access in array form any element
-    	// Default is 'none' from v1.1.0+
-    	arrayAccessForm : "none",
-    	
-    	// Handling empty nodes (text|object). 
-    	// When X2JS found empty node like <test></test> it will be transformed to test : '' for 'text' mode, 
-    	// or to Object for 'object' mode  
-    	// Default is 'text'
-    	emptyNodeForm  : "text",
-    	
-    	// Enable/Disable auxiliary function in generated JSON object to print text nodes with __text/__cdata
-    	// Default is true
-    	enableToStringFunc : true,
-    	
-    	// Array access paths (array). 
-    	// Use this option to configure paths to XML elements always in "array form". 
-    	// You can configure beforehand paths to all your array elements based on XSD or your knowledge
-    	// about XML structure
-    	// Every path could be a simple string (like 'parent.child1.child2'), a regex (like /.*\.child2/), or a custom function
-    	// Default is empty array
-		arrayAccessFormPaths : [],
 
-		// Strip whitespaces (trimming text nodes)
-		stripWhitespaces : true,
-		
-		// Skip empty text tags for nodes with children
-		skipEmptyTextNodesForObj : true,
-		
-		// DateTime access paths (array). 
-    	// Use this option to configure paths to XML elements for "datetimes form". 
-    	// You can configure beforehand paths to all your array elements based on XSD or your knowledge
-    	// about XML structure
-    	// Every path could be a simple string (like 'parent.child1.child2'), a regex (like /.*\.child2/), or a custom function
-    	// Default is empty array
-		datetimeAccessFormPaths : [],
-        
-        // If true, the document root element is removed from the output.
-        // Instead of accessing result.Book.Title, you will access result.Title.
-        // Default is false.
-        ignoreRoot : false,
-        
-        // { test : function(name, value) { return true; }, convert : function(name, value) { return parseFloat(value); } }
-        // convert() will be called for every attribute where test() returns true and the return value from convert()
-        // will replace the original value of tha attribute, as it was parsed 
-        attributeConverters : []
-    });
-        
     // JSON to DOM
     var xmlDoc = x2js.json2xml(
         {
@@ -74,19 +17,19 @@
                 MyChild : 'my_child_value',
                 MyAnotherChild: 10,
                 MyArray : [ 'test', 'test2' ],
-                MyArrayRecords : [ 
+                MyArrayRecords : [
                     {
-                        ttt : 'vvvv' 
+                        ttt : 'vvvv'
                     },
                     {
-                        ttt : 'vvvv2' 
-                    }                     
+                        ttt : 'vvvv2'
+                    }
                 ]
             }
         }
     );
-    
-    
+
+
     // JSON to XML string
     var xmlDocStr = x2js.json2xml_str(
         {
@@ -94,33 +37,33 @@
                 MyChild : 'my_child_value',
                 MyAnotherChild : 10,
                 MyArray : [ 'test', 'test2' ],
-                MyArrayRecords : [ 
+                MyArrayRecords : [
                     {
-                        ttt : 'vvvv' 
+                        ttt : 'vvvv'
                     },
                     {
-                        ttt : 'vvvv2' 
-                    }                     
+                        ttt : 'vvvv2'
+                    }
                 ]
             }
         }
     );
-    
+
     console.log(xmlDocStr);
-    
+
     // JSON arrays to string
     var xmlDocStr = x2js.json2xml_str(
     	{
     		MyRoot : {
     			namedItemArray: {
-    				item : [ 
-		    			{ first: 'success1' } , 
+    				item : [
+		    			{ first: 'success1' } ,
 		    			{ first: 'success2' }
-	    			] 
+	    			]
 	    		},
-	    		namedArray: [ 
-	    			{ first: 'success1' } , 
-	    			{ first: 'success2' } 
+	    		namedArray: [
+	    			{ first: 'success1' } ,
+	    			{ first: 'success2' }
 	    		],
 	    		justArray: [ 'just success1', 'just success2' ],
 	    		arrayWithAttrs : [
@@ -132,20 +75,20 @@
 	    			{
 	    				_test : 'successAttr2',
 	    				__text : 'success2',
-	    				temp : 'successTemp2'	    			
-	    			}    			
+	    				temp : 'successTemp2'
+	    			}
 	    		]
-	    	} 
+	    	}
     	}
     );
-    
-    console.log(xmlDocStr);    
-    
-    // XML string to JSON    
+
+    console.log(xmlDocStr);
+
+    // XML string to JSON
     var xmlText = "<MyOperation><test>Success</test><test2><item>ddsfg</item><item>dsdgfdgfd</item></test2></MyOperation>";
     var jsonObj = x2js.xml_str2json( xmlText );
     console.log(jsonObj.MyOperation.test);
-    
+
     // Array access form examples
     console.log(x2js.asArray(jsonObj.MyOperation.test)[0]);
     // Or old style (1.0.+):
@@ -153,13 +96,13 @@
     jsonObj = x2jsOld.xml_str2json( xmlText );
     console.log("Old is "+jsonObj.MyOperation.test_asArray[0]);
 
-    // XML/DOM to JSON    
+    // XML/DOM to JSON
     var xmlText = " <MyOperation> <test>- Success -</test> <test2> TestText <item> ddsfg </item> TestText2 <item>dsdgfdgfd</item></test2></MyOperation>"
     xmlDoc=x2js.parseXmlString(xmlText);
-    
+
     var jsonObj = x2js.xml2json( xmlDoc );
     console.log(jsonObj.MyOperation.test);
-    
+
     // Parsing XML attrs
     var xmlText = "<MyOperation myAttr='SuccessAttrValue'><txtAttrChild sAttr='SUCCESS TXT ATTR CHILD'>SUCCESS TXT</txtAttrChild><test>Success</test><test2 myAttr='SuccessAttrValueTest2'><item>ddsfg</item><item>dsdgfdgfd</item></test2></MyOperation>";
     var jsonObj = x2js.xml_str2json( xmlText );
@@ -168,12 +111,12 @@
     console.log(jsonObj.MyOperation.txtAttrChild._sAttr);
     console.log(jsonObj.MyOperation.txtAttrChild.__text);
     console.log(jsonObj.MyOperation.txtAttrChild.toString());
-    
+
     // JSON to XML attrs
     var xmlDocStr = x2js.json2xml_str(
         {
             TestAttrRoot : {
-                _myAttr : 'myAttrValue',                
+                _myAttr : 'myAttrValue',
                 MyChild : 'my_child_value',
                 MyAnotherChild: 10,
                 MyTextAttrChild : {
@@ -183,11 +126,11 @@
             }
         }
     );
-    
+
     console.log(xmlDocStr);
-    
+
     //Change prefix for attributes
-    var x2jsChangedAttrs = new X2JS({    	 				
+    var x2jsChangedAttrs = new X2JS({
     	// XML attributes. Default is "_"
     	attributePrefix : "$$"
     });
@@ -195,10 +138,10 @@
     console.log(jsonObj.MyOperation.$$myAttr);
     console.log(jsonObj.MyOperation.test2.$$myAttr);
     console.log(jsonObj.MyOperation.txtAttrChild.$$sAttr);
-    
+
     xmlDocStr = x2jsChangedAttrs.json2xml_str({
             TestAttrRoot : {
-                _myAttr : 'myAttrValue',                
+                _myAttr : 'myAttrValue',
                 MyChild : 'my_child_value',
                 MyAnotherChild: 10,
                 MyTextAttrChild : {
@@ -208,17 +151,17 @@
             }
         }
     );
-    
+
     console.log(xmlDocStr);
-    
-    
+
+
     // Parse XML with namespaces
     var xmlText = "<testns:MyOperation xmlns:testns='http://www.example.org'><test>Success</test><test2 myAttr='SuccessAttrValueTest2'><item>ddsfg</item><item>dsdgfdgfd</item><item2>testArrSize</item2></test2></testns:MyOperation>";
     var jsonObj = x2js.xml_str2json( xmlText );
     console.log(jsonObj.MyOperation.test);
     if(jsonObj.MyOperation.test2.item.length > 2)
 	console.log("Error! Incorrect array len!");
-    
+
     var testObjC = {
             'm:TestAttrRoot' : {
             	'_tns:m' : 'http://www.example.org',
@@ -227,14 +170,14 @@
                 'cms:MyAnotherChild' : 'vdfd'
             }
     }
-    
+
     // Parse JSON object with namespaces
     var xmlDocStr = x2js.json2xml_str(
         testObjC
     );
-    
+
     console.log(xmlDocStr);
-    
+
     // Parse JSON object constructed with another NS-style
     var testObjNew = {
             TestAttrRoot : {
@@ -248,37 +191,37 @@
                 }
             }
     }
-    
+
     // Parse JSON object with namespaces
     var xmlDocStr = x2js.json2xml_str(
         testObjNew
     );
-    
+
     console.log(xmlDocStr);
 
     // Parse XML with header
     var xmlText = "<?xml version='1.0' encoding='utf-8' ?>\n"+
     			  "<test>XML HEADER SUCCESS!</test>";
-    
+
     var jsonObj = x2js.xml_str2json( xmlText );
     console.log(jsonObj.test);
-    
+
     // Parse XML with CDATA
     var xmlText = "<!-- Root comment --><test><simple>simple success</simple><data><![CDATA[<CDATA success/>]]></data> </test>";
-    
+
     var jsonObj = x2js.xml_str2json( xmlText );
     console.log(jsonObj.test.data.toString());
     console.log(jsonObj.test.data.__cdata);
     console.log(jsonObj.test.simple);
-    
-    
+
+
     // Parse JSON object with CDATA
     var xmlDocStr = x2js.json2xml_str(
         jsonObj
     );
     console.log(xmlDocStr);
 
-	// Parse JSON with emtpy attributes    
+	// Parse JSON with emtpy attributes
 	var xmlDocStr = x2js.json2xml_str(
         {
             MyRoot : {
@@ -291,13 +234,13 @@
                 MyEmptyChild2 : {
                 	_attr : "test",
                 	__text : "Empty Nodes Test"
-                }                                
+                }
             }
         }
     );
-    
+
     console.log(xmlDocStr);
-    
+
     // Escaping XML characters
 	xmlDocStr = x2js.json2xml_str(
         {
@@ -311,15 +254,15 @@
             }
         }
     );
-	
+
 	console.log(xmlDocStr);
 
     jsonObj = x2js.xml_str2json( xmlDocStr );
     console.log(jsonObj.MyRoot.MyEscapeXmlChild);
     console.log(jsonObj.MyRoot.MyEscapeXmlChild2._attr);
     console.log(jsonObj.MyRoot.MyEscapeXmlChild2.toString());
-    
-    // Array access path 
+
+    // Array access path
     x2js = new X2JS({
     	arrayAccessFormPaths : [
 		   "MyArrays.test4.item",
@@ -333,13 +276,13 @@
     		"<test4><item>success</item></test4>"+
     		"<test5><item>success</item></test5>"+
     	"</MyArrays>";
-    
-    	
+
+
     jsonObj = x2js.xml_str2json( xmlText );
     console.log(jsonObj.MyArrays.test3.item[0]);
     console.log(jsonObj.MyArrays.test4.item[0]);
     console.log(jsonObj.MyArrays.test5.item);
-    
+
     // Working with datetimes
     x2js = new X2JS({
     	datetimeAccessFormPaths : [
@@ -352,61 +295,19 @@
     		"<testds>2002-10-10T12:00:00+04:00</testds>"+
     		"<testdt1>2002-10-10T12:00:00Z</testdt1>"+
     		"<testdt2>2002-10-10T12:00:00</testdt2>"+
-    		"<testdc>2002-10-10T12:00:00Z</testdc>"+    		
+    		"<testdc>2002-10-10T12:00:00Z</testdc>"+
     	"</MyDts>";
     jsonObj = x2js.xml_str2json( xmlText );
-    	
+
     console.log(jsonObj.MyDts.testds);
     console.log(jsonObj.MyDts.testdt1);
     console.log(jsonObj.MyDts.testdt2);
     console.log(x2js.asDateTime( jsonObj.MyDts.testdc ));
-	                    
+
     console.log(x2js.getVersion());
-    
-     // ignoreRoot should drop the root element from the output
-    x2js = new X2JS({
-    	ignoreRoot : true
-    });
 
-    xmlText = "<MyDts><testds>success</testds></MyDts>";
-    jsonObj = x2js.xml_str2json( xmlText );
-    
-    console.log("ignoreRoot success?: " + jsonObj.testds)
-    
-    // converters should convert but only when appropriate
-    x2js = new X2JS({
-    	attributeConverters : [
-            {
-                test : function(name, value) {
-                    return name === "test1";
-                },
-                convert : function(name, value) {
-                    return "success 1.*";
-                }
-            }
-        ]
-    });
+    console.log('-- ALL TESTS COMPLETED! --');
 
-    xmlText = "<Root><element test1=\"FAIL\" test2=\"success 2.1\">first</element><element test1=\"FAIL 1.2\" test2=\"success 2.2\">second</element></Root>";
-    jsonObj = x2js.xml_str2json( xmlText );
-    
-    console.log("converter success 1.1?: " + jsonObj.Root.element[0]._test1);
-    console.log("converter success 2.1?: " + jsonObj.Root.element[0]._test2);
-    console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test1);
-    console.log("converter success 2.1?: " + jsonObj.Root.element[1]._test2);
-    
-    // Empty attribute prefix is just fine
-    x2js = new X2JS({
-    	attributePrefix : ""
-    });
-
-    xmlText = "<Root><element attribute1=\"success\">fail</element></Root>";
-    jsonObj = x2js.xml_str2json( xmlText );
-    
-    console.log("empty attribute prefix success?: " + jsonObj.Root.element.attribute1);
-    
-    console.log('-- ALL TESTS COMPLETED! --');     
-            
 </script>
 </body>
 </html>
