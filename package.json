@@ -1,40 +1,44 @@
 {
-  "name": "x2js",
-  "version": "2.0.0",
-  "description": "Transforms between XML strings or DOM trees and JavaScript object trees.",
-  "main": "x2js.js",
-  "dependencies": {},
-  "devDependencies": {
-    "eslint": "^1.7.3",
-    "eslint-config-axinom": "^1.0.3",
-    "karma": "^0.13.14",
-    "karma-chrome-launcher": "^0.2.1",
-    "karma-ie-launcher": "^0.2.0",
-    "karma-qunit": "^0.1.7",
-    "qunitjs": "^1.20.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Axinom/x2js.git"
-  },
-  "keywords": [
-    "xml",
-    "json",
-    "convert",
-    "transform",
-    "mapping",
-    "map"
-  ],
-  "author": "",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/Axinom/x2js/issues"
-  },
-  "homepage": "https://github.com/Axinom/x2js#readme",
-  "eslintConfig": {
-    "extends": "axinom",
-    "env": {
-      "qunit": true
+    "name": "x2js",
+    "version": "2.0.0",
+    "description": "Transforms between XML strings or DOM trees and JavaScript object trees.",
+    "main": "x2js.js",
+    "dependencies": {},
+    "devDependencies": {
+        "eslint": "^1.7.3",
+        "eslint-config-axinom": "^1.0.3",
+        "karma": "^0.13.14",
+        "karma-chrome-launcher": "^0.2.1",
+        "karma-firefox-launcher": "^0.1.6",
+        "karma-ie-launcher": "^0.2.0",
+        "karma-qunit": "^0.1.7",
+        "qunitjs": "^1.20.0"
+    },
+    "scripts": {
+        "test": "./node_modules/karma/bin/karmastart --single-run --browsers Firefox"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Axinom/x2js.git"
+    },
+    "keywords": [
+        "xml",
+        "json",
+        "convert",
+        "transform",
+        "mapping",
+        "map"
+    ],
+    "author": "",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/Axinom/x2js/issues"
+    },
+    "homepage": "https://github.com/Axinom/x2js#readme",
+    "eslintConfig": {
+        "extends": "axinom",
+        "env": {
+            "qunit": true
+        }
     }
-  }
 }
