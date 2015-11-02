@@ -15,7 +15,7 @@
         "qunitjs": "^1.20.0"
     },
     "scripts": {
-        "test": "./node_modules/karma/bin/karmastart --single-run --browsers Firefox"
+        "test": "./node_modules/karma/bin/karma start --single-run --browsers Firefox"
     },
     "repository": {
         "type": "git",
