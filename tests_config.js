@@ -142,7 +142,7 @@
 
 		assert.ok(js.document);
 		assert.ok(js.document.datetimeElement);
-		assert.ok(typeof js.document.datetimeElement === 'object');
+		assert.ok(js.document.datetimeElement instanceof Date);
 		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
 	});
 
@@ -157,7 +157,7 @@
 
 		assert.ok(js.document);
 		assert.ok(js.document.datetimeElement);
-		assert.ok(typeof js.document.datetimeElement === 'object');
+		assert.ok(js.document.datetimeElement instanceof Date);
 		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
 	});
 
@@ -174,7 +174,7 @@
 
 		assert.ok(js.document);
 		assert.ok(js.document.datetimeElement);
-		assert.ok(typeof js.document.datetimeElement === 'object');
+		assert.ok(js.document.datetimeElement instanceof Date);
 		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
 	});
 
@@ -199,7 +199,7 @@
 
 		for (var i = 0; i < js.document.datetimeElement.length; i++) {
 			assert.ok(js.document.datetimeElement[i]);
-			assert.ok(typeof js.document.datetimeElement[i] === 'object');
+			assert.ok(js.document.datetimeElement[i] instanceof Date);
 			assert.strictEqual(js.document.datetimeElement[i].getFullYear(), 2002);
 		}
 	});
