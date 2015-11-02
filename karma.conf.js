@@ -12,8 +12,8 @@ module.exports = function karmaExports(config) {
 
         // list of files / patterns to load in the browser
         "files": [
-            'xml2json.js',
-            'tests.js'
+            'x2js.js',
+            'tests*.js'
         ],
 
         // list of files to exclude
