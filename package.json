@@ -1,0 +1,47 @@
+{
+    "name": "x2js",
+    "version": "2.0.0",
+    "description": "Transforms between XML string and JavaScript object trees.",
+    "main": "x2js.js",
+    "dependencies": {},
+    "devDependencies": {
+        "eslint": "^1.7.3",
+        "eslint-config-axinom": "^1.0.3",
+        "karma": "^0.13.14",
+        "karma-chrome-launcher": "^0.2.1",
+        "karma-firefox-launcher": "^0.1.6",
+        "karma-ie-launcher": "^0.2.0",
+        "karma-qunit": "^0.1.7",
+        "qunit-cli": "^0.2.0",
+        "qunitjs": "^1.20.0",
+        "xmldom": "^0.1.19"
+    },
+    "scripts": {
+        "travistest": "./node_modules/karma/bin/karma start --single-run --browsers Firefox",
+        "test": "karma start --single-run && .\\node_modules\\.bin\\qunit-cli all_tests.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Axinom/x2js.git"
+    },
+    "keywords": [
+        "xml",
+        "convert",
+        "transform",
+        "mapping",
+        "map"
+    ],
+    "author": "Axinom",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/Axinom/x2js/issues"
+    },
+    "homepage": "https://github.com/Axinom/x2js#readme",
+    "eslintConfig": {
+        "extends": "axinom",
+        "env": {
+            "qunit": true,
+            "node": true
+        }
+    }
+}
