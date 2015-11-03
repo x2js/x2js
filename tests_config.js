@@ -1,6 +1,15 @@
-/* global X2JS */
+(function (root, factory) {
+	'use strict';
 
-(function () {
+    if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but only CommonJS-like
+		// environments that support module.exports, like Node.
+        factory(require('./x2js'), require('qunit-cli'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.X2JS, root.QUnit);
+	}
+})(this, function (X2JS, QUnit) {
 	'use strict';
 
 	QUnit.module('Configuration options');
@@ -203,4 +212,4 @@
 			assert.strictEqual(js.document.datetimeElement[i].getFullYear(), 2002);
 		}
 	});
-})();
+});

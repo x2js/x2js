@@ -22,7 +22,7 @@
 	Supported export methods:
 	* AMD
 	* <script> (window.X2JS)
-	* Node.js
+	* Node.js (requires manual install of xmldom module)
 
 	Limitations:
 	* Attribute namespace prefixes are not parsed as such.
@@ -40,12 +40,12 @@
     } else if (typeof module === 'object' && module.exports) {
         // Node. Does not work with strict CommonJS, but only CommonJS-like
 		// environments that support module.exports, like Node.
-        module.exports = factory();
+        module.exports = factory(require("xmldom").DOMParser);
     } else {
         // Browser globals (root is window)
         root.X2JS = factory();
 	}
-})(this, function () {
+})(this, function (CustomDOMParser) {
 	"use strict";
 
     // We return a constructor that can be used to make X2JS instances.
@@ -592,13 +592,19 @@
 				return null;
 			}
 
-			var isIEParser = window.ActiveXObject || "ActiveXObject" in window;
-
+			var parser = null;
 			var domNode = null;
 
-			if (window.DOMParser) {
-				var parser = new window.DOMParser();
+			if (CustomDOMParser) {
+				// This branch is used for node.js, with the xmldom parser.
+				parser = new CustomDOMParser();
+
+				domNode = parser.parseFromString(xml, "text/xml");
+			} else if (window && window.DOMParser) {
+				parser = new window.DOMParser();
 				var parsererrorNS = null;
+
+				var isIEParser = window.ActiveXObject || "ActiveXObject" in window;
 
 				// IE9+ now is here
 				if (!isIEParser) {
