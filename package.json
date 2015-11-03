@@ -18,7 +18,7 @@
         "qunitjs": "^1.20.0"
     },
     "scripts": {
-        "travistest": "./node_modules/karma/bin/karma start --single-run --browsers Firefox",
+        "travistest": "./node_modules/karma/bin/karma start --single-run --browsers Firefox && ./node_modules/.bin/qunit-cli all_tests.js",
         "test": "karma start --single-run && .\\node_modules\\.bin\\qunit-cli all_tests.js"
     },
     "repository": {
