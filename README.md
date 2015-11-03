@@ -3,6 +3,8 @@
 This is a library that converts between XML and JavaScript objects.
 The conversion is not necessarily lossless but it is very convenient.
 
+[![npm version](https://badge.fury.io/js/x2js.svg)](https://badge.fury.io/js/x2js)
+
 master | development
 ------ | -----------
 [![Build Status](https://travis-ci.org/Axinom/x2js.svg?branch=master)](https://travis-ci.org/Axinom/x2js) | [![Build Status](https://travis-ci.org/Axinom/x2js.svg?branch=development)](https://travis-ci.org/Axinom/x2js)
