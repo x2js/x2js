@@ -1,6 +1,15 @@
-/* global X2JS */
+(function (root, factory) {
+	'use strict';
 
-(function () {
+    if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but only CommonJS-like
+		// environments that support module.exports, like Node.
+        factory(require('./x2js'), require('qunit-cli'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.X2JS, root.QUnit);
+	}
+})(this, function (X2JS, QUnit) {
 	'use strict';
 
 	QUnit.module('Configuration options');
@@ -142,7 +151,7 @@
 
 		assert.ok(js.document);
 		assert.ok(js.document.datetimeElement);
-		assert.ok(typeof js.document.datetimeElement === 'object');
+		assert.ok(js.document.datetimeElement instanceof Date);
 		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
 	});
 
@@ -157,7 +166,7 @@
 
 		assert.ok(js.document);
 		assert.ok(js.document.datetimeElement);
-		assert.ok(typeof js.document.datetimeElement === 'object');
+		assert.ok(js.document.datetimeElement instanceof Date);
 		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
 	});
 
@@ -174,7 +183,7 @@
 
 		assert.ok(js.document);
 		assert.ok(js.document.datetimeElement);
-		assert.ok(typeof js.document.datetimeElement === 'object');
+		assert.ok(js.document.datetimeElement instanceof Date);
 		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
 	});
 
@@ -199,8 +208,8 @@
 
 		for (var i = 0; i < js.document.datetimeElement.length; i++) {
 			assert.ok(js.document.datetimeElement[i]);
-			assert.ok(typeof js.document.datetimeElement[i] === 'object');
+			assert.ok(js.document.datetimeElement[i] instanceof Date);
 			assert.strictEqual(js.document.datetimeElement[i].getFullYear(), 2002);
 		}
 	});
-})();
+});
