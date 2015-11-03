@@ -13,7 +13,7 @@ The code is all contained within the `x2js.js` file, so you can include it direc
 via a script tag. It will create `window.X2JS`, which is a constructor that can be
 used to create instances of the converter, providing an optional configuration object.
 
-Using node, you can do the same - `require("x2js")` will give you the constructor.
+In a Node app, `require("x2js")` will give you the constructor that you can use the same way.
 **NB!** You must manually install the `xmldom` package, as it is not marked as a dependency since
 it is not needed if you do not plan to use the library as part of a Node application.
 
@@ -37,7 +37,7 @@ Exported functions are listed at the end of the file - there are only a few of t
 A set of QUnit test cases are part of the project and act as the primary usage examples.
 
 Run `karma start --single run` to test with Chrome, Firefox and IE.
-Run `node_modules\.bin\qunit-cli all_tests.js` to yrdy with Node.
+Run `node_modules\.bin\qunit-cli all_tests.js` to test with the Node runtime.
 Run `npm test` to execute both sets of tests.
 
 Travis CI uses `npm travistest` to run tests using Firefox via Karma and Node.
