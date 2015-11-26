@@ -673,6 +673,11 @@
 			XML->DOM - implemented by browser.
 		*/
 
+		// Transformns an XML string into DOM-tree
+		this.xml2dom = function(xml) {
+			return parseXml(xml);
+		};
+			
 		// Transforms a DOM tree to JavaScript objects.
 		this.dom2js = function dom2js(domNode) {
 			return deserializeDomChildren(domNode, null);
