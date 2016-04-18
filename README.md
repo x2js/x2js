@@ -16,10 +16,10 @@ via a script tag. It will create `window.X2JS`, which is a constructor that can 
 used to create instances of the converter, providing an optional configuration object.
 
 In a Node app, `require("x2js")` will give you the constructor that you can use the same way.
-**NB!** You must manually install the `xmldom` package, as it is not marked as a dependency since
-it is not needed if you do not plan to use the library as part of a Node application.
 
 Loading via AMD-capable loaders (e.g. require.js) is also supported and works equivalently.
+
+The `xmldom` package is a dependency but it is only used under Node, as in browsers the browser DOM is used.
 
 # Quick start
 
