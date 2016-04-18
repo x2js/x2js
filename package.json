@@ -3,7 +3,9 @@
     "version": "2.0.0",
     "description": "Transforms between XML string and JavaScript object trees.",
     "main": "x2js.js",
-    "dependencies": {},
+    "dependencies": {
+      "xmldom": "^0.1.19"
+    },
     "devDependencies": {
         "eslint": "^1.7.3",
         "eslint-config-axinom": "^1.0.3",
@@ -13,8 +15,7 @@
         "karma-ie-launcher": "^0.2.0",
         "karma-qunit": "^0.1.7",
         "qunit-cli": "^0.2.0",
-        "qunitjs": "^1.20.0",
-        "xmldom": "^0.1.19"
+        "qunitjs": "^1.20.0"
     },
     "scripts": {
         "travistest": "./node_modules/karma/bin/karma start --single-run --browsers Firefox",
