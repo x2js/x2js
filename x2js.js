@@ -540,7 +540,7 @@
 			if (element === undefined || element === null || element === '') {
 				result += serializeStartTag(element, elementName, attributes, true);
 			} else if (typeof element == 'object') {
-				if (element instanceof Array) {
+				if (Object.prototype.toString.call(element) === '[object Array]') {
 					result += serializeArray(element, elementName, attributes);
 				} else if (element instanceof Date) {
 					result += serializeStartTag(element, elementName, attributes, false);
