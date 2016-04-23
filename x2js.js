@@ -539,7 +539,7 @@
 
 			if (element === undefined || element === null || element === '') {
 				result += serializeStartTag(element, elementName, attributes, true);
-			} else if (element instanceof Object) {
+			} else if (typeof element == 'object') {
 				if (element instanceof Array) {
 					result += serializeArray(element, elementName, attributes);
 				} else if (element instanceof Date) {
