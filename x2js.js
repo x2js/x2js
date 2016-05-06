@@ -539,8 +539,8 @@
 
 			if (element === undefined || element === null || element === '') {
 				result += serializeStartTag(element, elementName, attributes, true);
-			} else if (element instanceof Object) {
-				if (element instanceof Array) {
+			} else if (typeof element == 'object') {
+				if (Object.prototype.toString.call(element) === '[object Array]') {
 					result += serializeArray(element, elementName, attributes);
 				} else if (element instanceof Date) {
 					result += serializeStartTag(element, elementName, attributes, false);
