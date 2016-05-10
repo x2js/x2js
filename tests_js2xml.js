@@ -33,6 +33,27 @@
 		assert.strictEqual(xml, expected);
 	});
 
+	QUnit.test('Element with attribute and selfClosingElements set to false', function (assert) {
+		var js = {
+			'document': {
+				'element': {
+					'_attribute': 'value'
+				}
+			}
+		};
+		var x = new X2JS({
+			'selfClosingElements': false
+		});
+		var xml = x.js2xml(js);
+
+		var expected = '<document>' +
+			'<element attribute="value"></element>' +
+			'</document>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
 	QUnit.test('Element with attribute containing XML characters', function (assert) {
 		var js = {
 			'document': {
@@ -137,6 +158,26 @@
 		assert.strictEqual(xml, expected);
 	});
 
+	QUnit.test('Empty string as value with selfClosingElements set to false', function (assert) {
+		var js = {
+			'document': {
+				'elementU': ''
+			}
+		};
+		var x = new X2JS({
+			'selfClosingElements': false
+		});
+
+		var xml = x.js2xml(js);
+
+		var expected = '<document>' +
+			'<elementU></elementU>' +
+			'</document>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
 	QUnit.test('Basic array', function (assert) {
 		var js = {
 			'document': {
@@ -170,6 +211,26 @@
 		var expected = '<document>' +
 			'<elementX />' +
 			'<elementX />' +
+			'</document>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
+	QUnit.test('Array of empty strings with selfClosingElements set to false', function (assert) {
+		var js = {
+			'document': {
+				'elementX': ['', '']
+			}
+		};
+		var x = new X2JS({
+			'selfClosingElements': false
+		});
+		var xml = x.js2xml(js);
+
+		var expected = '<document>' +
+			'<elementX></elementX>' +
+			'<elementX></elementX>' +
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
