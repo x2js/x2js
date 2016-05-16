@@ -543,7 +543,7 @@
 		function serializeJavaScriptObject(element, elementName, attributes) {
 			var result = "";
 
-			if (element === undefined || element === null || element === '' && config.selfClosingElements) {
+			if ((element === undefined || element === null || element === '') && config.selfClosingElements) {
 				result += serializeStartTag(element, elementName, attributes, true);
 			} else if (typeof element == 'object') {
 				if (Object.prototype.toString.call(element) === '[object Array]') {

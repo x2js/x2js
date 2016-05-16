@@ -54,6 +54,27 @@
 		assert.strictEqual(xml, expected);
 	});
 
+	QUnit.test('Element with attribute and selfClosingElements set to true', function (assert) {
+		var js = {
+			'document': {
+				'element': {
+					'_attribute': 'value'
+				}
+			}
+		};
+		var x = new X2JS({
+			'selfClosingElements': true
+		});
+		var xml = x.js2xml(js);
+
+		var expected = '<document>' +
+			'<element attribute="value" />' +
+			'</document>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
 	QUnit.test('Element with attribute containing XML characters', function (assert) {
 		var js = {
 			'document': {
