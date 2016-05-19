@@ -117,6 +117,12 @@
 			if (config.attributePrefix === undefined) {
 				config.attributePrefix = "_";
 			}
+
+			// If true, empty elements will created as self closing elements (<element />)
+			// If false, empty elements will be created with start and end tags (<element></element>)
+			if (config.selfClosingElements === undefined) {
+				config.selfClosingElements = true;
+			}
 		}
 
 		function initRequiredPolyfills() {
@@ -537,7 +543,7 @@
 		function serializeJavaScriptObject(element, elementName, attributes) {
 			var result = "";
 
-			if (element === undefined || element === null || element === '') {
+			if ((element === undefined || element === null || element === '') && config.selfClosingElements) {
 				result += serializeStartTag(element, elementName, attributes, true);
 			} else if (typeof element == 'object') {
 				if (Object.prototype.toString.call(element) === '[object Array]') {
@@ -552,8 +558,11 @@
 						result += serializeStartTag(element, elementName, attributes, false);
 						result += serializeJavaScriptObjectChildren(element);
 						result += serializeEndTag(element, elementName);
-					} else {
+					} else if (config.selfClosingElements) {
 						result += serializeStartTag(element, elementName, attributes, true);
+					} else {
+						result += serializeStartTag(element, elementName, attributes, false);
+						result += serializeEndTag(element, elementName);
 					}
 				}
 			} else {
@@ -677,7 +686,7 @@
 		this.xml2dom = function(xml) {
 			return parseXml(xml);
 		};
-			
+
 		// Transforms a DOM tree to JavaScript objects.
 		this.dom2js = function dom2js(domNode) {
 			return deserializeDomChildren(domNode, null);
