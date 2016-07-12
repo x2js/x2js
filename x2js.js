@@ -123,6 +123,11 @@
 			if (config.selfClosingElements === undefined) {
 				config.selfClosingElements = true;
 			}
+
+			// If this property defined as false and an XML element has CData node, it will be converted to text without additional property "__cdata"
+			if (config.keepCData === undefined) {
+				config.keepCData = false;
+			}
 		}
 
 		function initRequiredPolyfills() {
@@ -380,7 +385,7 @@
 				result.__text = convertToDateIfRequired(result.__text, "#text", elementPath + ".#text");
 			}
 
-			if (result["#cdata-section"]) {
+			if(result.hasOwnProperty('#cdata-section')) {
 				result.__cdata = result["#cdata-section"];
 				delete result["#cdata-section"];
 
@@ -398,6 +403,10 @@
 				}
 			}
 			delete result.__cnt;
+			
+			if (!config.keepCDada && (result.hasOwnProperty('__text') || result.hasOwnProperty('__cdata'))) {
+				return (result.__text ? result.__text : '') + (result.__cdata ? result.__cdata : '');
+			}
 
 			if (config.enableToStringFunc && (result.__text || result.__cdata)) {
 				result.toString = function toString() {
