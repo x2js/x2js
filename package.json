@@ -1,6 +1,6 @@
 {
     "name": "x2js",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Transforms between XML string and JavaScript object trees.",
     "main": "x2js.js",
     "dependencies": {

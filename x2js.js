@@ -124,7 +124,7 @@
 				config.selfClosingElements = true;
 			}
 
-			// If this property defined as false and an XML element has CData node, it will be converted to text without additional property "__cdata"
+			// If this property defined as false and an XML element has CData node ONLY, it will be converted to text without additional property "__cdata"
 			if (config.keepCData === undefined) {
 				config.keepCData = false;
 			}
@@ -404,8 +404,8 @@
 			}
 			delete result.__cnt;
 			
-			if (!config.keepCDada && (result.hasOwnProperty('__text') || result.hasOwnProperty('__cdata'))) {
-				return (result.__text ? result.__text : '') + (result.__cdata ? result.__cdata : '');
+			if (!config.keepCDada && (!result.hasOwnProperty('__text') && result.hasOwnProperty('__cdata'))) {
+				return (result.__cdata ? result.__cdata : '');
 			}
 
 			if (config.enableToStringFunc && (result.__text || result.__cdata)) {
