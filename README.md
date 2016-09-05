@@ -43,3 +43,7 @@ Run `node_modules\.bin\qunit-cli all_tests.js` to test with the Node runtime.
 Run `npm test` to execute both sets of tests.
 
 Travis CI uses `npm travistest` to run tests using Firefox via Karma and Node.
+
+# Contributing
+
+Contributions are welcome! Please base  any pull requests on the *development* branch.
