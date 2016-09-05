@@ -652,8 +652,24 @@
 				domNode.async = "false";
 				domNode.loadXML(xml);
 			}
-
+			
+			normalize(domNode);
+			
 			return domNode;
+		}
+
+		function normalize (node) {
+			// See http://stackoverflow.com/questions/22337498/why-does-ie11-handle-node-normalize-incorrectly-for-the-minus-symbol
+			if (!node) { return; }
+			if (node.nodeType == 3) {
+				while (node.nextSibling && node.nextSibling.nodeType == 3) {
+					node.nodeValue += node.nextSibling.nodeValue;
+					node.parentNode.removeChild(node.nextSibling);
+				}
+			} else {
+				normalize(node.firstChild);
+			}
+			normalize(node.nextSibling);
 		}
 
 		this.asArray = function asArray(prop) {
