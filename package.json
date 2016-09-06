@@ -18,8 +18,8 @@
         "qunitjs": "^2.0.1"
     },
     "scripts": {
-        "travistest": "./node_modules/karma/bin/karma start --single-run --browsers Firefox && ./node_modules/.bin/qunit-cli all_tests.js",
-        "test": "karma start --single-run && .\\node_modules\\.bin\\qunit-cli all_tests.js"
+        "travistest": "./node_modules/karma/bin/karma start --single-run --browsers Firefox && ./node_modules/.bin/qunit-cli all_tests.js && node ./node_modules/eslint/bin/eslint.js --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
+        "test": "karma start --single-run && .\\node_modules\\.bin\\qunit-cli all_tests.js && node ./node_modules/eslint/bin/eslint.js --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js"
     },
     "repository": {
         "type": "git",

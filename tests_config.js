@@ -12,6 +12,9 @@
 })(this, function (X2JS, QUnit) {
 	'use strict';
 
+	// Test cases are full of magic numbers and that's fine.
+	/* eslint-disable no-magic-numbers */
+
 	QUnit.module('Configuration options');
 
 	QUnit.test('Default attribute prefix', function (assert) {
