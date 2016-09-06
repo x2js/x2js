@@ -7,15 +7,15 @@
       "xmldom": "^0.1.19"
     },
     "devDependencies": {
-        "eslint": "^1.7.3",
+        "eslint": "^3.4.0",
         "eslint-config-axinom": "^1.0.3",
-        "karma": "^0.13.14",
-        "karma-chrome-launcher": "^0.2.1",
-        "karma-firefox-launcher": "^0.1.6",
-        "karma-ie-launcher": "^0.2.0",
-        "karma-qunit": "^0.1.7",
+        "karma": "^1.2.0",
+        "karma-chrome-launcher": "^2.0.0",
+        "karma-firefox-launcher": "^1.0.0",
+        "karma-ie-launcher": "^1.0.0",
+        "karma-qunit": "^1.2.0",
         "qunit-cli": "^0.2.0",
-        "qunitjs": "^1.20.0"
+        "qunitjs": "^2.0.1"
     },
     "scripts": {
         "travistest": "./node_modules/karma/bin/karma start --single-run --browsers Firefox && ./node_modules/.bin/qunit-cli all_tests.js",
