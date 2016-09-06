@@ -385,7 +385,7 @@
 				result.__text = convertToDateIfRequired(result.__text, "#text", elementPath + ".#text");
 			}
 
-			if(result.hasOwnProperty('#cdata-section')) {
+			if (result.hasOwnProperty('#cdata-section')) {
 				result.__cdata = result["#cdata-section"];
 				delete result["#cdata-section"];
 
@@ -424,6 +424,8 @@
 				return deserializeElementChildren(node, parentPath);
 			} else if (node.nodeType === DOMNodeTypes.TEXT_NODE || node.nodeType === DOMNodeTypes.CDATA_SECTION_NODE) {
 				return node.nodeValue;
+			} else {
+				return null;
 			}
 		}
 
@@ -554,7 +556,7 @@
 
 			if ((element === undefined || element === null || element === '') && config.selfClosingElements) {
 				result += serializeStartTag(element, elementName, attributes, true);
-			} else if (typeof element == 'object') {
+			} else if (typeof element === 'object') {
 				if (Object.prototype.toString.call(element) === '[object Array]') {
 					result += serializeArray(element, elementName, attributes);
 				} else if (element instanceof Date) {
@@ -658,17 +660,21 @@
 			return domNode;
 		}
 
-		function normalize (node) {
+		function normalize(node) {
 			// See http://stackoverflow.com/questions/22337498/why-does-ie11-handle-node-normalize-incorrectly-for-the-minus-symbol
-			if (!node) { return; }
-			if (node.nodeType == 3) {
-				while (node.nextSibling && node.nextSibling.nodeType == 3) {
+			if (!node) {
+				return;
+			}
+
+			if (node.nodeType === 3) {
+				while (node.nextSibling && node.nextSibling.nodeType === 3) {
 					node.nodeValue += node.nextSibling.nodeValue;
 					node.parentNode.removeChild(node.nextSibling);
 				}
 			} else {
 				normalize(node.firstChild);
 			}
+
 			normalize(node.nextSibling);
 		}
 
@@ -708,7 +714,7 @@
 		*/
 
 		// Transformns an XML string into DOM-tree
-		this.xml2dom = function(xml) {
+		this.xml2dom = function xml2dom(xml) {
 			return parseXml(xml);
 		};
 
