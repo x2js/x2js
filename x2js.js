@@ -22,7 +22,7 @@
 	Supported export methods:
 	* AMD
 	* <script> (window.X2JS)
-	* Node.js (requires manual install of xmldom module)
+	* Node.js
 
 	Limitations:
 	* Attribute namespace prefixes are not parsed as such.
