@@ -612,6 +612,10 @@
 				return null;
 			}
 
+			if (typeof xml !== "string") {
+				return null;
+			}
+
 			var parser = null;
 			var domNode = null;
 

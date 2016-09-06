@@ -12,6 +12,9 @@
 })(this, function (X2JS, QUnit) {
 	'use strict';
 
+	// Test cases are full of magic numbers and that's fine.
+	/* eslint-disable no-magic-numbers */
+
 	QUnit.module('Converting XML to JavaScript objects');
 
 	QUnit.test('Basic XML', function (assert) {
@@ -84,5 +87,13 @@
 		assert.ok(js.document);
 		assert.ok(js.document.element);
 		assert.strictEqual(js.document.element, 'great success');
+	});
+
+	QUnit.test('Passing non-string to xml2js returns null', function (assert) {
+		var x = new X2JS();
+
+		assert.propEqual(x.xml2js({ "wololo": "rogan" }), null);
+		assert.propEqual(x.xml2js(99), null);
+		assert.propEqual(x.xml2js(undefined), null);
 	});
 });
