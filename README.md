@@ -46,4 +46,7 @@ Travis CI uses `npm travistest` to run tests using Firefox via Karma and Node.
 
 # Contributing
 
-Contributions are welcome! Please base  any pull requests on the *development* branch.
+Contributions are welcome! To ensure speedy merges, please:
+
+* base any pull requests on the **development** branch.
+* ensure that the code passes ESLint validation with the included ruleset.
