@@ -404,7 +404,7 @@
 			}
 			delete result.__cnt;
 			
-			if (!config.keepCDada && (!result.hasOwnProperty('__text') && result.hasOwnProperty('__cdata'))) {
+			if (!config.keepCData && (!result.hasOwnProperty('__text') && result.hasOwnProperty('__cdata'))) {
 				return (result.__cdata ? result.__cdata : '');
 			}
 
