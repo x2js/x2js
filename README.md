@@ -31,8 +31,7 @@ The `xmldom` package is a dependency but it is only used under Node, as in brows
 	var xml = x2js.js2xml(document);
 	console.log(xml);
 
-See the code within `x2js.js` for information about what configuration options you can pass.
-Exported functions are listed at the end of the file - there are only a few of them.
+See the type definitions within `x2js.d.ts` for information about what configuration options you can pass.
 
 # Automated tests
 
