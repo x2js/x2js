@@ -527,7 +527,7 @@
 
 			if (textNode instanceof Object) {
 				result += serializeComplexTextNodeContents(textNode);
-			} else if (textNode) {
+			} else if (textNode !== null) {
 				if (config.escapeMode)
 					result += escapeXmlChars(textNode);
 				else
