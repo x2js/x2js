@@ -179,6 +179,22 @@
 		assert.strictEqual(xml, expected);
 	});
 
+	QUnit.test('Zero as value', function (assert) {
+		var js = {
+			'document': {
+				'element': 0
+			}
+		};
+		var x = new X2JS();
+		var xml = x.js2xml(js);
+
+		var expected = '<document>' +
+			'<element>0</element>' +
+			'</document>';
+
+		assert.strictEqual(xml, expected);
+	});
+
 	QUnit.test('Empty string as value with selfClosingElements set to false', function (assert) {
 		var js = {
 			'document': {
