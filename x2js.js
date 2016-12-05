@@ -50,7 +50,7 @@
 
     // We return a constructor that can be used to make X2JS instances.
     return function X2JS(config) {
-		var VERSION = "2.0.1";
+		var VERSION = "3.1.0";
 
 		config = config || {};
 
