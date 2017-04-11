@@ -1,4 +1,8 @@
-# x2js
+# Maintainer needed
+
+This library is no longer actively used at Axinom. It therefore lacks a maintainer who can pay attention to pull requests and issues. If you are an active developer who would like to take over, please open an issue stating your intentions and providing contact information so that the maintainership can be transferred to you.
+ 
+ # x2js
 
 This is a library that converts between XML and JavaScript objects.
 The conversion is not necessarily lossless but it is very convenient.
