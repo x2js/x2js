@@ -1,7 +1,7 @@
 # Maintainer needed
 
 This library is no longer actively used at Axinom. It therefore lacks a maintainer who can pay attention to pull requests and issues. If you are an active developer who would like to take over, please open an issue stating your intentions and providing contact information so that the maintainership can be transferred to you.
- 
+
  # x2js
 
 This is a library that converts between XML and JavaScript objects.
@@ -27,13 +27,15 @@ The `xmldom` package is a dependency but it is only used under Node, as in brows
 
 # Quick start
 
-	var x2js = new X2JS();
-	var document = x2js.xml2js(xml);
+```js
+var x2js = new X2JS();
+var document = x2js.xml2js(xml);
 
-	console.log(document.MyRootElement.ElementX[1].toString());
+console.log(document.MyRootElement.ElementX[1].toString());
 
-	var xml = x2js.js2xml(document);
-	console.log(xml);
+var xml = x2js.js2xml(document);
+console.log(xml);
+```
 
 See the type definitions within `x2js.d.ts` for information about what configuration options you can pass.
 
