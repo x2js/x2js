@@ -16,8 +16,6 @@
 	limitations under the License.
 */
 
-// This fork is maintained at https://github.com/Axinom/x2js
-
 /*
 	Supported export methods:
 	* AMD
