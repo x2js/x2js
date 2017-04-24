@@ -250,4 +250,4 @@ declare namespace X2JS {
     }
 }
 
-export default X2JS;
+export = X2JS;
