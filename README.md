@@ -11,7 +11,7 @@ The conversion is not necessarily lossless but it is very convenient.
 
 master | development
 ------ | -----------
-[![Build Status](https://travis-ci.org/Axinom/x2js.svg?branch=master)](https://travis-ci.org/Axinom/x2js) | [![Build Status](https://travis-ci.org/Axinom/x2js.svg?branch=development)](https://travis-ci.org/Axinom/x2js)
+[![Build Status](https://travis-ci.org/x2js/x2js.svg?branch=master)](https://travis-ci.org/x2js/x2js) | [![Build Status](https://travis-ci.org/x2js/x2js.svg?branch=development)](https://travis-ci.org/x2js/x2js)
 
 # Integration
 
