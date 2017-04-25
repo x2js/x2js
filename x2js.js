@@ -32,22 +32,22 @@
 	"use strict";
 
 	/* global define */
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
+		define([], factory);
+	} else if (typeof module === 'object' && module.exports) {
+		// Node. Does not work with strict CommonJS, but only CommonJS-like
 		// environments that support module.exports, like Node.
-        module.exports = factory(require("xmldom").DOMParser);
-    } else {
-        // Browser globals (root is window)
-        root.X2JS = factory();
+		module.exports = factory(require("xmldom").DOMParser);
+	} else {
+		// Browser globals (root is window)
+		root.X2JS = factory();
 	}
 })(this, function (CustomDOMParser) {
 	"use strict";
 
-    // We return a constructor that can be used to make X2JS instances.
-    return function X2JS(config) {
+	// We return a constructor that can be used to make X2JS instances.
+	return function X2JS(config) {
 		var VERSION = "3.1.1";
 
 		config = config || {};
@@ -401,7 +401,7 @@
 				}
 			}
 			delete result.__cnt;
-			
+
 			if (!config.keepCData && (!result.hasOwnProperty('__text') && result.hasOwnProperty('__cdata'))) {
 				return (result.__cdata ? result.__cdata : '');
 			}
