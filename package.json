@@ -44,6 +44,9 @@
         "env": {
             "qunit": true,
             "node": true
+        },
+        "rules": {
+            "indent": [2,"tab", {"SwitchCase": 1}]
         }
     }
 }

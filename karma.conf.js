@@ -1,3 +1,4 @@
+/* eslint indent: [2, 4] */
 module.exports = function karmaExports(config) {
     "use strict";
 
