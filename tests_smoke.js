@@ -1,13 +1,13 @@
 (function (root, factory) {
 	'use strict';
 
-    if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
+	if (typeof module === 'object' && module.exports) {
+		// Node. Does not work with strict CommonJS, but only CommonJS-like
 		// environments that support module.exports, like Node.
-        factory(require('./x2js'), require('qunit-cli'));
-    } else {
-        // Browser globals (root is window)
-        factory(root.X2JS, root.QUnit);
+		factory(require('./x2js'), require('qunit-cli'));
+	} else {
+		// Browser globals (root is window)
+		factory(root.X2JS, root.QUnit);
 	}
 })(this, function (X2JS, QUnit) {
 	'use strict';

@@ -1,13 +1,13 @@
 (function (root, factory) {
 	'use strict';
 
-    if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
+	if (typeof module === 'object' && module.exports) {
+		// Node. Does not work with strict CommonJS, but only CommonJS-like
 		// environments that support module.exports, like Node.
-        factory(require('./x2js'), require('qunit-cli'));
-    } else {
-        // Browser globals (root is window)
-        factory(root.X2JS, root.QUnit);
+		factory(require('./x2js'), require('qunit-cli'));
+	} else {
+		// Browser globals (root is window)
+		factory(root.X2JS, root.QUnit);
 	}
 })(this, function (X2JS, QUnit) {
 	'use strict';
@@ -329,6 +329,93 @@
 			'<ns:elementV a="a"><x>t</x></ns:elementV>' +
 			'<elementV b="b"><ns:m>n</ns:m></elementV>' +
 			'</ns:document>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
+	QUnit.test('Filter out', function (assert) {
+		var js = {
+			'document': {
+				'elementV': [
+					{ 'x': 't' },
+					{ 'password': 'n' }
+				],
+				'password': 'n'
+			}
+		};
+		var x = new X2JS({
+			'jsAttributeFilter': function (name, value) {
+				return name === 'password';
+			}
+		});
+		var xml = x.js2xml(js);
+
+		var expected = '<document>' +
+			'<elementV><x>t</x></elementV>' +
+			'<elementV></elementV>' +
+			'</document>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
+	QUnit.test('Attribute converter', function (assert) {
+		var js = {
+			'document': {
+				'elementV': [
+					{ 'x': 't' },
+					{ 'password': 'n' }
+				],
+				'password': 'n'
+			}
+		};
+		var x = new X2JS({
+			'jsAttributeConverter': function (name, value) {
+				return name === 'password' ? '***' : value;
+			}
+		});
+		var xml = x.js2xml(js);
+
+		var expected = '<document>' +
+			'<elementV><x>t</x></elementV>' +
+			'<elementV><password>***</password></elementV>' +
+			'<password>***</password>' +
+			'</document>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
+	QUnit.test('UTC dates', function (assert) {
+		var date = new Date();
+		var js = {
+			'date': date
+		};
+		var x = new X2JS({
+			'jsDateUTC': true
+		});
+		var xml = x.js2xml(js);
+
+		var expected = '<date>' +
+			date.toUTCString() +
+			'</date>';
+
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
+
+	QUnit.test('ISO dates', function (assert) {
+		var date = new Date();
+		var js = {
+			'date': date
+		};
+		var x = new X2JS();
+		var xml = x.js2xml(js);
+
+		var expected = '<date>' +
+			date.toISOString() +
+			'</date>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
 		assert.strictEqual(xml, expected);

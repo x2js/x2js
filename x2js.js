@@ -32,22 +32,22 @@
 	"use strict";
 
 	/* global define */
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
+		define([], factory);
+	} else if (typeof module === 'object' && module.exports) {
+		// Node. Does not work with strict CommonJS, but only CommonJS-like
 		// environments that support module.exports, like Node.
-        module.exports = factory(require("xmldom").DOMParser);
-    } else {
-        // Browser globals (root is window)
-        root.X2JS = factory();
+		module.exports = factory(require("xmldom").DOMParser);
+	} else {
+		// Browser globals (root is window)
+		root.X2JS = factory();
 	}
 })(this, function (CustomDOMParser) {
 	"use strict";
 
-    // We return a constructor that can be used to make X2JS instances.
-    return function X2JS(config) {
+	// We return a constructor that can be used to make X2JS instances.
+	return function X2JS(config) {
 		var VERSION = "3.1.1";
 
 		config = config || {};
@@ -61,9 +61,17 @@
 			// If "object" then <empty></empty> will be transformed to {}.
 			config.emptyNodeForm = config.emptyNodeForm || "text";
 
+			// Function that will be called for each elements, if the function returns true, the element will be skipped
+			// function(name, value) { return true; };
+			config.jsAttributeFilter = config.jsAttributeFilter;
+
+			// Function that will be called for each elements, the element value will be replaced by the returned value
+			// function(name, value) { return parseFloat(value); };
+			config.jsAttributeConverter = config.jsAttributeConverter;
+
 			// Allows attribute values to be converted on the fly during parsing to objects.
 			// 	"test": function(name, value) { return true; }
-			//	"convert": function(name, value) { return parseFloat(value);
+			//	"convert": function(name, value) { return parseFloat(value); };
 			// convert() will be called for every attribute where test() returns true
 			// and the return value from convert() will replace the original value of the attribute.
 			config.attributeConverters = config.attributeConverters || [];
@@ -125,6 +133,11 @@
 			// If this property defined as false and an XML element has CData node ONLY, it will be converted to text without additional property "__cdata"
 			if (config.keepCData === undefined) {
 				config.keepCData = false;
+			}
+
+			// If true, will output dates in UTC
+			if (config.jsDateUTC === undefined) {
+				config.jsDateUTC = false;
 			}
 		}
 
@@ -401,7 +414,7 @@
 				}
 			}
 			delete result.__cnt;
-			
+
 			if (!config.keepCData && (!result.hasOwnProperty('__text') && result.hasOwnProperty('__cdata'))) {
 				return (result.__cdata ? result.__cdata : '');
 			}
@@ -552,6 +565,14 @@
 		function serializeJavaScriptObject(element, elementName, attributes) {
 			var result = "";
 
+			// Filter out elements
+			if (config.jsAttributeFilter && config.jsAttributeFilter.call(null, elementName, element)) {
+				return result;
+			}
+			// Convert element
+			if (config.jsAttributeConverter) {
+				element = config.jsAttributeConverter.call(null, elementName, element);
+			}
 			if ((element === undefined || element === null || element === '') && config.selfClosingElements) {
 				result += serializeStartTag(element, elementName, attributes, true);
 			} else if (typeof element === 'object') {
@@ -559,7 +580,8 @@
 					result += serializeArray(element, elementName, attributes);
 				} else if (element instanceof Date) {
 					result += serializeStartTag(element, elementName, attributes, false);
-					result += element.toISOString();
+					// Serialize date
+					result += config.jsDateUTC ? element.toUTCString() : element.toISOString();
 					result += serializeEndTag(element, elementName);
 				} else {
 					var childElementCount = getDataElementCount(element);
