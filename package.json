@@ -5,7 +5,7 @@
     "main": "x2js.js",
     "types": "x2js.d.ts",
     "dependencies": {
-      "xmldom": "^0.1.19"
+        "xmldom": "^0.1.19"
     },
     "devDependencies": {
         "eslint": "^3.4.0",
@@ -46,7 +46,13 @@
             "node": true
         },
         "rules": {
-            "indent": [2,"tab", {"SwitchCase": 1}]
+            "indent": [
+                2,
+                "tab",
+                {
+                    "SwitchCase": 1
+                }
+            ]
         }
     }
 }
