@@ -1,8 +1,16 @@
 language: node_js
 sudo: false
 node_js:
-  - "6"
+- '8'
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 script: npm run-script travistest
+deploy:
+  provider: npm
+  email: gmer@hcuge.ch
+  api_key:
+    secure: r1L8AKqPbGt7z5hg62giQ3mKr+X+uB41TwxlID9U6hIRgUBSb2ovgjROAO9nPibf+dGVKzeGG7zABwV3LZ45MBSO4yEVgMuuliUz0lfoYPFeClXVlqLyxLvGuApmQRJrY/Wpje2Unjy3NF55YeRWEcMxNybq7WTlGuoVVpca6wbqYsSHKHhA/BaVKKBxDTB3MfDYmniBemGPmwgsfijrQ62eT/H72+Y+wHte1FXHIk5jwEH0BO7OghHZ+24oZ1papwsCPKESBhfy06DnqXyR0XzwXcwtvPVNrVK3HK9AWbvgBcL/3scT58hNt0AQ/d+VNTgTczKZVY7oof1p0APJH0SzfL5ELBU1EHITskuZ2l6c5hjFUOjZNNjL6G0inJPmLaXfoPI47Nt+9QrNUg87vFWllF71eVoo1dhZHTryFKfvO56GSPwc/7tlFrr4Xoflg8feEyk6xNoSbe7J0Lte7og/G6fgxjezIwd3KdM7KmRmKXFKsZBRWtvGxBDQQZB7dm8fXArLwlwF4k97Kk2vOS+OD48QptYIhxgcm+3FxNhfEk5rg6HEf1RaG2UP68ogLYRi4/+YLfedoYbV5B9ODLxIBkvEe9hZeOZ287RDIxznJspPa4oXwwMSdO5KSfNQa9EgZmHZfPgJ0DNnthbOb3WdfKjQ4k1VoTgMpSrRvTo=
+  on:
+    repo: x2js/x2js
+    branch: master
