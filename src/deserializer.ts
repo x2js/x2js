@@ -44,7 +44,7 @@ export class Deserializer {
   }
 
   public deserializeElementChildren(element: any, elementPath: any) {
-    let result: { [key: string]: any } = {}
+    let result: { [key: string]: any } | string = {}
     result.__cnt = 0
 
     const nodeChildren = element.childNodes
@@ -163,7 +163,7 @@ export class Deserializer {
     if (result.__cnt === 1 && result.__text) {
       result = result.__text
     } else if (result.__cnt === 0 && this.config.emptyNodeForm === 'text') {
-      result = {}
+      result = ''
     } else if (
       result.__cnt > 1 &&
       result.__text !== undefined &&
@@ -179,10 +179,10 @@ export class Deserializer {
     delete result.__cnt
 
     /**
-         * We are checking if we are creating a __cdata property or if we just add the content of cdata inside result.
-         * But, if we have a property inside xml tag (<tag PROPERTY="1"></tag>), and a cdata inside, we can't ignore it.
-         * In this case we are keeping __cdata property.
-         */
+             * We are checking if we are creating a __cdata property or if we just add the content of cdata inside result.
+             * But, if we have a property inside xml tag (<tag PROPERTY="1"></tag>), and a cdata inside, we can't ignore it.
+             * In this case we are keeping __cdata property.
+             */
     if (
       !this.config.keepCData &&
       (!result.hasOwnProperty('__text') &&
