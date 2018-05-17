@@ -25,6 +25,7 @@
 			'<elementY>hello there</elementY>' +
 			'<elementZ><![CDATA[hello again]]></elementZ>' +
 			'<elementZA>Test<![CDATA[ hello again]]></elementZA>' +
+			'<elementZB attribute="value"><![CDATA[hello again]]></elementZB>' +
 			'</document>';
 		var x = new X2JS();
 		var js = x.xml2js(xml);
@@ -51,6 +52,11 @@
 		assert.ok(js.document.elementZA);
 		assert.strictEqual(js.document.elementZA.toString(), 'Test hello again');
 		assert.strictEqual(js.document.elementZA.__cdata, ' hello again');
+
+		assert.ok(js.document.elementZB);
+		assert.strictEqual(js.document.elementZB.toString(), 'hello again');
+		assert.strictEqual(js.document.elementZB._attribute, 'value');
+		assert.strictEqual(js.document.elementZB.__cdata, 'hello again');
 	});
 
 	QUnit.test('XML with namespace prefixes', function (assert) {

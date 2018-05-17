@@ -415,7 +415,12 @@
 			}
 			delete result.__cnt;
 
-			if (!config.keepCData && (!result.hasOwnProperty('__text') && result.hasOwnProperty('__cdata'))) {
+			/**
+			 * We are checking if we are creating a __cdata property or if we just add the content of cdata inside result.
+			 * But, if we have a property inside xml tag (<tag PROPERTY="1"></tag>), and a cdata inside, we can't ignore it.
+			 * In this case we are keeping __cdata property.
+			 */
+			if (!config.keepCData && (!result.hasOwnProperty('__text') && result.hasOwnProperty('__cdata') && Object.keys(result).length === 1)) {
 				return (result.__cdata ? result.__cdata : '');
 			}
 
