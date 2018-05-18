@@ -1,9 +1,9 @@
-import { Config } from './config'
+import { X2JSConfig } from './config'
 import { Converter } from './converter'
 export class Deserializer {
-  private config: Config
+  private config: X2JSConfig
 
-  constructor(config: Config) {
+  constructor(config: X2JSConfig) {
     this.config = config
   }
 
@@ -44,7 +44,7 @@ export class Deserializer {
   }
 
   public deserializeElementChildren(element: any, elementPath: any) {
-    let result: { [key: string]: any } | string = {}
+    let result: any = {}
     result.__cnt = 0
 
     const nodeChildren = element.childNodes
@@ -179,10 +179,10 @@ export class Deserializer {
     delete result.__cnt
 
     /**
-             * We are checking if we are creating a __cdata property or if we just add the content of cdata inside result.
-             * But, if we have a property inside xml tag (<tag PROPERTY="1"></tag>), and a cdata inside, we can't ignore it.
-             * In this case we are keeping __cdata property.
-             */
+     * We are checking if we are creating a __cdata property or if we just add the content of cdata inside result.
+     * But, if we have a property inside xml tag (<tag PROPERTY="1"></tag>), and a cdata inside, we can't ignore it.
+     * In this case we are keeping __cdata property.
+     */
     if (
       !this.config.keepCData &&
       (!result.hasOwnProperty('__text') &&

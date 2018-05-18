@@ -1,8 +1,6 @@
-export class Config {
+export class X2JSConfig {
   public arrayAccessForm = 'none'
   public emptyNodeForm = 'text'
-  public jsAttributeFilter: () => void
-  public jsAttributeConverter: () => void
   public attributeConverters: any[] = []
   public datetimeAccessFormPaths: any[] = []
   public arrayAccessFormPaths: any[] = []
@@ -16,4 +14,6 @@ export class Config {
   public selfClosingElements = true
   public keepCData = false
   public jsDateUTC = false
+  public jsAttributeFilter: any
+  public jsAttributeConverter: any
 }

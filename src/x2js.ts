@@ -1,18 +1,20 @@
-import { Config } from './config'
+import { X2JSConfig } from './config'
 import { Polyfills } from './polyfills'
 import { Deserializer } from './deserializer'
 import { Converter } from './converter'
 import { Serializer } from './serializer'
 import { Parser } from './parser'
 
+export * from './config'
+
 export default class X2JS {
-  private config: Config
+  private config: X2JSConfig
   private deserializer: Deserializer
   private serializer: Serializer
 
-  constructor(config?: Config) {
+  constructor(config?: X2JSConfig) {
     Polyfills.init()
-    this.config = config ? config : new Config()
+    this.config = { ...new X2JSConfig(), ...config }
 
     this.deserializer = new Deserializer(this.config)
     this.serializer = new Serializer(this.config)

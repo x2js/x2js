@@ -1,8 +1,8 @@
-import { Config } from './config'
+import { X2JSConfig } from './config'
 export class Serializer {
-  private config: Config
+  private config: X2JSConfig
 
-  constructor(config: Config) {
+  constructor(config: X2JSConfig) {
     this.config = config
   }
 
