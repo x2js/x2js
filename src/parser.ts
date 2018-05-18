@@ -1,21 +1,21 @@
 interface ActiveXObject {
-  new (s: string): any
+  new (s: string): any;
 }
 
-declare var ActiveXObject: ActiveXObject
+declare var ActiveXObject: ActiveXObject;
 
 export class Parser {
   public static parseXml(xml: string) {
     if (xml === undefined) {
-      return null
+      return null;
     }
 
     if (typeof xml !== 'string') {
-      return null
+      return null;
     }
 
-    let parser = null
-    let domNode = null
+    let parser = null;
+    let domNode = null;
 
     // TODO : Check where CustomDOMParser is
     /*if (CustomDOMParser) {
@@ -27,43 +27,43 @@ export class Parser {
       DOMParser
     ) {
       // TODO : Test
-      parser = new DOMParser()
-      let parsererrorNS = null
+      parser = new DOMParser();
+      let parsererrorNS = null;
 
-      const isIEParser = 'ActiveXObject' in window // TODO : Test
+      const isIEParser = 'ActiveXObject' in window; // TODO : Test
 
       // IE9+ now is here
       if (!isIEParser) {
         try {
-          parsererrorNS = parser.parseFromString('INVALID', 'text/xml').childNodes[0].namespaceURI
+          parsererrorNS = parser.parseFromString('INVALID', 'text/xml').childNodes[0].namespaceURI;
         } catch (err) {
-          parsererrorNS = null
+          parsererrorNS = null;
         }
       }
 
       try {
-        domNode = parser.parseFromString(xml, 'text/xml')
+        domNode = parser.parseFromString(xml, 'text/xml');
         if (
           parsererrorNS !== null &&
           domNode.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0
         ) {
-          domNode = null
+          domNode = null;
         }
       } catch (err) {
-        domNode = null
+        domNode = null;
       }
     } else {
       // IE :(
       if (xml.indexOf('<?') === 0) {
-        xml = xml.substr(xml.indexOf('?>') + 2)
+        xml = xml.substr(xml.indexOf('?>') + 2);
       }
 
       /* global ActiveXObject */
-      domNode = new ActiveXObject('Microsoft.XMLDOM') // TODO : Test
-      domNode.async = 'false'
-      domNode.loadXML(xml)
+      domNode = new ActiveXObject('Microsoft.XMLDOM'); // TODO : Test
+      domNode.async = 'false';
+      domNode.loadXML(xml);
     }
 
-    return domNode
+    return domNode;
   }
 }

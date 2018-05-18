@@ -5,14 +5,14 @@ export class Polyfills {
   public static init() {
     if (typeof String.prototype.trim !== 'function') {
       String.prototype.trim = function trim() {
-        return this.replace(/^\s+|^\n+|(\s|\n)+$/g, '')
-      }
+        return this.replace(/^\s+|^\n+|(\s|\n)+$/g, '');
+      };
     }
 
     if (typeof Date.prototype.toISOString !== 'function') {
       // Implementation from http://stackoverflow.com/questions/2573521/how-do-i-output-an-iso-8601-formatted-string-in-javascript
       Date.prototype.toISOString = function toISOString() {
-        const MS_IN_S = 1000
+        const MS_IN_S = 1000;
 
         return (
           this.getUTCFullYear() +
@@ -29,16 +29,16 @@ export class Polyfills {
           '.' +
           String((this.getUTCMilliseconds() / MS_IN_S).toFixed(3)).slice(2, 5) +
           'Z'
-        )
-      }
+        );
+      };
     }
   }
 
   public static pad(numb: number): string {
-    let r = String(numb)
+    let r = String(numb);
     if (r.length === 1) {
-      r = '0' + r
+      r = '0' + r;
     }
-    return r
+    return r;
   }
 }
