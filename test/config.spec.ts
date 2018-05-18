@@ -134,8 +134,7 @@ describe('Configuration options', () => {
   })
 
   it('Datetime parsing via path', () => {
-    const xml =
-      '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>'
+    const xml = '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>'
     const x = new X2JS({
       datetimeAccessFormPaths: ['document.datetimeElement']
     } as X2JSConfig)
@@ -148,8 +147,7 @@ describe('Configuration options', () => {
   })
 
   it('Datetime parsing via regex', () => {
-    const xml =
-      '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>'
+    const xml = '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>'
     const x = new X2JS({
       datetimeAccessFormPaths: [/.*\.datetimeElement$/]
     } as X2JSConfig)
@@ -162,8 +160,7 @@ describe('Configuration options', () => {
   })
 
   it('Datetime parsing via function', () => {
-    const xml =
-      '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>'
+    const xml = '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>'
     const x = new X2JS({
       datetimeAccessFormPaths: [
         function(elementPath) {

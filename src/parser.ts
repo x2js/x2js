@@ -35,8 +35,7 @@ export class Parser {
       // IE9+ now is here
       if (!isIEParser) {
         try {
-          parsererrorNS = parser.parseFromString('INVALID', 'text/xml')
-            .childNodes[0].namespaceURI
+          parsererrorNS = parser.parseFromString('INVALID', 'text/xml').childNodes[0].namespaceURI
         } catch (err) {
           parsererrorNS = null
         }
@@ -46,8 +45,7 @@ export class Parser {
         domNode = parser.parseFromString(xml, 'text/xml')
         if (
           parsererrorNS !== null &&
-          domNode.getElementsByTagNameNS(parsererrorNS, 'parsererror').length >
-            0
+          domNode.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0
         ) {
           domNode = null
         }

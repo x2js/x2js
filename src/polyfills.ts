@@ -1,7 +1,7 @@
 export class Polyfills {
   /**
-     * Polyfills for Internet Explorer 8
-     */
+   * Polyfills for Internet Explorer 8
+   */
   public static init() {
     if (typeof String.prototype.trim !== 'function') {
       String.prototype.trim = function trim() {

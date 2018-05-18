@@ -20,11 +20,7 @@ export class Serializer {
         const element = jsObject[elementName]
         const attributes = this.getDataAttributeNames(element)
 
-        result += this.serializeJavaScriptObject(
-          element,
-          elementName,
-          attributes
-        )
+        result += this.serializeJavaScriptObject(element, elementName, attributes)
       }
     }
 
@@ -33,11 +29,7 @@ export class Serializer {
     return result
   }
 
-  public serializeJavaScriptObject(
-    element: any,
-    elementName: any,
-    attributes: any
-  ) {
+  public serializeJavaScriptObject(element: any, elementName: any, attributes: any) {
     let result = ''
 
     // Filter out elements
@@ -49,11 +41,7 @@ export class Serializer {
     }
     // Convert element
     if (this.config.jsAttributeConverter) {
-      element = this.config.jsAttributeConverter.call(
-        null,
-        elementName,
-        element
-      )
+      element = this.config.jsAttributeConverter.call(null, elementName, element)
     }
     if (
       (element === undefined || element === null || element === '') &&
@@ -64,42 +52,20 @@ export class Serializer {
       if (Object.prototype.toString.call(element) === '[object Array]') {
         result += this.serializeArray(element, elementName, attributes)
       } else if (element instanceof Date) {
-        result += this.serializeStartTag(
-          element,
-          elementName,
-          attributes,
-          false
-        )
+        result += this.serializeStartTag(element, elementName, attributes, false)
         // Serialize date
-        result += this.config.jsDateUTC
-          ? element.toUTCString()
-          : element.toISOString()
+        result += this.config.jsDateUTC ? element.toUTCString() : element.toISOString()
         result += this.serializeEndTag(element, elementName)
       } else {
         const childElementCount = this.getDataElementCount(element)
         if (childElementCount > 0 || element.__text || element.__cdata) {
-          result += this.serializeStartTag(
-            element,
-            elementName,
-            attributes,
-            false
-          )
+          result += this.serializeStartTag(element, elementName, attributes, false)
           result += this.serializeJavaScriptObjectChildren(element)
           result += this.serializeEndTag(element, elementName)
         } else if (this.config.selfClosingElements) {
-          result += this.serializeStartTag(
-            element,
-            elementName,
-            attributes,
-            true
-          )
+          result += this.serializeStartTag(element, elementName, attributes, true)
         } else {
-          result += this.serializeStartTag(
-            element,
-            elementName,
-            attributes,
-            false
-          )
+          result += this.serializeStartTag(element, elementName, attributes, false)
           result += this.serializeEndTag(element, elementName)
         }
       }
@@ -119,9 +85,7 @@ export class Serializer {
     selfClosing: boolean
   ) {
     let resultStr =
-      '<' +
-      (jsObject && jsObject.__prefix ? jsObject.__prefix + ':' : '') +
-      elementName
+      '<' + (jsObject && jsObject.__prefix ? jsObject.__prefix + ':' : '') + elementName
 
     if (attributeNames) {
       for (let i = 0; i < attributeNames.length; i++) {
@@ -132,8 +96,7 @@ export class Serializer {
           attributeValue = this.escapeXmlChars(attributeValue)
         }
 
-        resultStr +=
-          ' ' + attributeName.substr(this.config.attributePrefix.length) + '='
+        resultStr += ' ' + attributeName.substr(this.config.attributePrefix.length) + '='
 
         if (this.config.useDoubleQuotes) {
           resultStr += '"' + attributeValue + '"'
@@ -153,12 +116,7 @@ export class Serializer {
   }
 
   private serializeEndTag(jsObject: any, elementName: string) {
-    return (
-      '</' +
-      (jsObject && jsObject.__prefix ? jsObject.__prefix + ':' : '') +
-      elementName +
-      '>'
-    )
+    return '</' + (jsObject && jsObject.__prefix ? jsObject.__prefix + ':' : '') + elementName + '>'
   }
 
   private serializeComplexTextNodeContents(textNode: any) {
@@ -179,20 +137,11 @@ export class Serializer {
     return result
   }
 
-  private serializeArray(
-    elementArray: any,
-    elementName: string,
-    attributes: string[]
-  ) {
+  private serializeArray(elementArray: any, elementName: string, attributes: string[]) {
     let result = ''
 
     if (elementArray.length === 0) {
-      result += this.serializeStartTag(
-        elementArray,
-        elementName,
-        attributes,
-        true
-      )
+      result += this.serializeStartTag(elementArray, elementName, attributes, true)
     } else {
       for (let i = 0; i < elementArray.length; i++) {
         result += this.serializeJavaScriptObject(

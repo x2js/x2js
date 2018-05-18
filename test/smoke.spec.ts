@@ -16,8 +16,7 @@ describe('Smoke tests', () => {
   })
 
   it('X->JS two elements', () => {
-    const xml =
-      '<document><element1>text</element1><element2>text2</element2></document>'
+    const xml = '<document><element1>text</element1><element2>text2</element2></document>'
     const x = new X2JS()
 
     const js = x.xml2js(xml)

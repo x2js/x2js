@@ -63,53 +63,31 @@ export class Deserializer {
       // We deliberately do not accept everything falsey here because
       // elements that resolve to empty string should still be preserved.
       if (result[childName] == null) {
-        result[childName] = this.deserializeDomChildren(
-          child,
-          elementPath + '.' + childName
-        )
-        this.ensureProperArrayAccessForm(
-          result,
-          childName,
-          elementPath + '.' + childName
-        )
+        result[childName] = this.deserializeDomChildren(child, elementPath + '.' + childName)
+        this.ensureProperArrayAccessForm(result, childName, elementPath + '.' + childName)
       } else {
         if (!(result[childName] instanceof Array)) {
           result[childName] = [result[childName]]
-          this.ensureProperArrayAccessForm(
-            result,
-            childName,
-            elementPath + '.' + childName
-          )
+          this.ensureProperArrayAccessForm(result, childName, elementPath + '.' + childName)
         }
 
-        result[childName][
-          result[childName].length
-        ] = this.deserializeDomChildren(child, elementPath + '.' + childName)
+        result[childName][result[childName].length] = this.deserializeDomChildren(
+          child,
+          elementPath + '.' + childName
+        )
       }
     }
 
     // Attributes
-    for (
-      let iAttribute = 0;
-      iAttribute < element.attributes.length;
-      iAttribute++
-    ) {
+    for (let iAttribute = 0; iAttribute < element.attributes.length; iAttribute++) {
       const attribute = element.attributes.item(iAttribute)
       result.__cnt++
 
       let adjustedValue = attribute.value
-      for (
-        let iConverter = 0;
-        iConverter < this.config.attributeConverters.length;
-        iConverter++
-      ) {
+      for (let iConverter = 0; iConverter < this.config.attributeConverters.length; iConverter++) {
         const converter = this.config.attributeConverters[iConverter]
         if (converter.test.call(null, attribute.name, attribute.value)) {
-          adjustedValue = converter.convert.call(
-            null,
-            attribute.name,
-            attribute.value
-          )
+          adjustedValue = converter.convert.call(null, attribute.name, attribute.value)
         }
       }
 
@@ -144,11 +122,7 @@ export class Deserializer {
         delete result['#text_asArray']
       }
 
-      result.__text = this.convertToDateIfRequired(
-        result.__text,
-        '#text',
-        elementPath + '.#text'
-      )
+      result.__text = this.convertToDateIfRequired(result.__text, '#text', elementPath + '.#text')
     }
 
     if (result.hasOwnProperty('#cdata-section')) {
@@ -169,10 +143,7 @@ export class Deserializer {
       result.__text !== undefined &&
       this.config.skipEmptyTextNodesForObj
     ) {
-      if (
-        (this.config.stripWhitespaces && result.__text === '') ||
-        result.__text.trim() === ''
-      ) {
+      if ((this.config.stripWhitespaces && result.__text === '') || result.__text.trim() === '') {
         delete result.__text
       }
     }
@@ -194,9 +165,7 @@ export class Deserializer {
 
     if (this.config.enableToStringFunc && (result.__text || result.__cdata)) {
       result.toString = function toString() {
-        return (
-          (this.__text ? this.__text : '') + (this.__cdata ? this.__cdata : '')
-        )
+        return (this.__text ? this.__text : '') + (this.__cdata ? this.__cdata : '')
       }
     }
 
@@ -216,11 +185,7 @@ export class Deserializer {
     return localName
   }
 
-  private ensureProperArrayAccessForm(
-    element: any,
-    childName: any,
-    elementPath: any
-  ) {
+  private ensureProperArrayAccessForm(element: any, childName: any, elementPath: any) {
     switch (this.config.arrayAccessForm) {
       case 'property':
         if (!(element[childName] instanceof Array)) {
@@ -231,10 +196,7 @@ export class Deserializer {
         break
     }
 
-    if (
-      !(element[childName] instanceof Array) &&
-      this.config.arrayAccessFormPaths.length > 0
-    ) {
+    if (!(element[childName] instanceof Array) && this.config.arrayAccessFormPaths.length > 0) {
       let match = false
 
       for (let i = 0; i < this.config.arrayAccessFormPaths.length; i++) {
@@ -263,11 +225,7 @@ export class Deserializer {
     }
   }
 
-  private convertToDateIfRequired(
-    value: any,
-    childName: string,
-    fullPath: string
-  ) {
+  private convertToDateIfRequired(value: any, childName: string, fullPath: string) {
     if (this.config.datetimeAccessFormPaths.length > 0) {
       const pathWithoutTextNode = fullPath.split('.#')[0]
 
