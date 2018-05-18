@@ -19,8 +19,6 @@ describe('Converting XML to JavaScript objects', () => {
     const x2js = new X2JS()
     const js = x2js.xml2js(xml)
 
-    console.log(js)
-
     expect(js.document).toBeDefined()
     expect(js.document.element).toBeDefined()
     expect(js.document.element._attribute).toBeDefined()
