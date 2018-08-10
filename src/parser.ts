@@ -1,3 +1,5 @@
+import * as CustomDOMParser from 'xmldom';
+
 interface ActiveXObject {
   new (s: string): any;
 }
@@ -16,17 +18,18 @@ export class Parser {
 
     let parser = null;
     let domNode = null;
+    let isNode = false;
 
-    // TODO : Check where CustomDOMParser is
-    /*if (CustomDOMParser) {
-            // This branch is used for node.js, with the xmldom parser.
-            parser = new CustomDOMParser();
+    // Check if we are on nodejs
+    if (typeof module === 'object' && module.exports) {
+      isNode = true;
+    }
 
-            domNode = parser.parseFromString(xml, "text/xml");
-        } else */ if (
-      DOMParser
-    ) {
-      // TODO : Test
+    if (isNode && CustomDOMParser) {
+      // This branch is used for node.js, with the xmldom parser.
+      parser = new CustomDOMParser.DOMParser();
+      domNode = parser.parseFromString(xml, 'text/xml');
+    } else if (DOMParser) {
       parser = new DOMParser();
       let parsererrorNS = null;
 
@@ -35,7 +38,8 @@ export class Parser {
       // IE9+ now is here
       if (!isIEParser) {
         try {
-          parsererrorNS = parser.parseFromString('INVALID', 'text/xml').childNodes[0].namespaceURI;
+          parsererrorNS = parser.parseFromString('INVALID', 'text/xml')
+            .childNodes[0].namespaceURI;
         } catch (err) {
           parsererrorNS = null;
         }
@@ -45,7 +49,8 @@ export class Parser {
         domNode = parser.parseFromString(xml, 'text/xml');
         if (
           parsererrorNS !== null &&
-          domNode.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0
+          domNode.getElementsByTagNameNS(parsererrorNS, 'parsererror').length >
+            0
         ) {
           domNode = null;
         }
