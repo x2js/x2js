@@ -528,7 +528,7 @@
 				result += "<![CDATA[" + textNode.__cdata + "]]>";
 			}
 
-			if (textNode.__text) {
+			if (textNode.__text || typeof(textNode.__text) == 'number' || typeof(textNode.__text) == 'boolean' ) {
 				if (config.escapeMode)
 					result += escapeXmlChars(textNode.__text);
 				else
@@ -590,7 +590,7 @@
 					result += serializeEndTag(element, elementName);
 				} else {
 					var childElementCount = getDataElementCount(element);
-					if (childElementCount > 0 || element.__text || element.__cdata) {
+					if (childElementCount > 0 || typeof(element.__text) == 'number' || typeof(element.__text) == 'boolean' || element.__text || element.__cdata) {
 						result += serializeStartTag(element, elementName, attributes, false);
 						result += serializeJavaScriptObjectChildren(element);
 						result += serializeEndTag(element, elementName);
