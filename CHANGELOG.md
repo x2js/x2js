@@ -1,3 +1,9 @@
+#### 3.2.4 (2019-01-23)
+
+##### New Features
+
+* **config:**  [#80](https://github.com/Axinom/x2js/pull/80) Add minified dist ([4d7b1bdb](https://github.com/Axinom/x2js/commit/4d7b1bdb3eca938afa45ed454d45e7478f43ceea))
+
 #### 3.2.3 (2018-11-06)
 
 ##### Continuous Integration
