@@ -21,8 +21,8 @@
         "uglify-js": "^3.4.9"
     },
     "scripts": {
-        "travistest": "npx karma start --single-run --browsers Firefox && npx qunit-cli all_tests.js && npx eslint.js --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
-        "test": "karma start --single-run && npx qunit-cli all_tests.js && npx eslint.js --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
+        "travistest": "npx karma start --single-run --browsers Firefox && npx qunit-cli all_tests.js && npx eslint --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
+        "test": "karma start --single-run && npx qunit-cli all_tests.js && npx eslint --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
         "postinstall": "rimraf dist && mkdir dist && npx uglifyjs x2js.js -o dist\\x2js.min.js -c -m --source-map \"includeSources='true',url='x2js.min.js.map'\""
     },
     "repository": {
