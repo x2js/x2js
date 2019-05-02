@@ -215,4 +215,25 @@
 			assert.strictEqual(js.document.datetimeElement[i].getFullYear(), 2002);
 		}
 	});
+    QUnit.test('Options to xmldom', function (assert) {
+        var xml = '<';
+        var x = new X2JS({
+            'xmldomOptions': {
+                'errorHandler': {
+                    error(error) {
+                        throw error;
+                    }
+                }
+            }
+        });
+
+        try {
+            x.xml2js(xml);
+        } catch (e) {
+            assert.equal(e, '[xmldom error]\telement parse error: [xmldom error]\tunexpected end of input\n' +
+                '@#[line:undefined,col:undefined]\n' +
+                '@#[line:undefined,col:undefined]');
+        }
+        assert.ok(true);
+    });
 });
