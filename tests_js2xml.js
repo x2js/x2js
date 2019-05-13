@@ -301,43 +301,43 @@
 		assert.strictEqual(xml, expected);
 	});
 
-        QUnit.test('Falsey element values + attributes', function (assert) {
-                var js = {
-                        'document': {
-                                'elementV': [
-                                        {
-                                                'm': {
-                                                        '__text': 'n',
-                                                        '_a': 'ns'
-                                                }
-                                        },
-                                        {
-                                                'm': {
-                                                        '__text': 0,
-                                                        '_a': 'ns'
-                                                }
-                                        },
-                                        {
-                                                'm': {
-                                                        '__text': false,
-                                                        '_a': 'ns'
-                                                }
-                                        }
-                                ]
-                        }
-                };
-                var x = new X2JS();
-                var xml = x.js2xml(js);
+	QUnit.test('Falsey element values + attributes', function (assert) {
+		var js = {
+			'document': {
+				'elementV': [
+					{
+						'm': {
+							'__text': 'n',
+							'_a': 'ns'
+						}
+					},
+					{
+						'm': {
+							'__text': 0,
+							'_a': 'ns'
+						}
+					},
+					{
+						'm': {
+							'__text': false,
+							'_a': 'ns'
+						}
+					}
+				]
+			}
+		};
+		var x = new X2JS();
+		var xml = x.js2xml(js);
 
-                var expected = '<document>' +
-                        '<elementV><m a="ns">n</m></elementV>' +
-                        '<elementV><m a="ns">0</m></elementV>' +
-                        '<elementV><m a="ns">false</m></elementV>' +
-                        '</document>';
+		var expected = '<document>' +
+			'<elementV><m a="ns">n</m></elementV>' +
+			'<elementV><m a="ns">0</m></elementV>' +
+			'<elementV><m a="ns">false</m></elementV>' +
+			'</document>';
 
-                // Implementation does not guarantee formatting so the test is somewhat fragile.
-                assert.strictEqual(xml, expected);
-      });
+		// Implementation does not guarantee formatting so the test is somewhat fragile.
+		assert.strictEqual(xml, expected);
+	});
 
 
 	QUnit.test('Namespaces', function (assert) {
