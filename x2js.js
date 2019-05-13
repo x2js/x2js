@@ -87,6 +87,10 @@
 			// (parent.child1.child2), a regex (/.*\.child2/) or function(elementName, elementPath).
 			config.arrayAccessFormPaths = config.arrayAccessFormPaths || [];
 
+            // xmldom constructor arguments
+            // @see https://github.com/jindw/xmldom#api-reference
+			config.xmldomOptions = config.xmldomOptions || {};
+
 			// If true, a toString function is generated to print nodes containing text or cdata.
 			// Useful if you want to accept both plain text and CData as equivalent inputs.
 			if (config.enableToStringFunc === undefined) {
@@ -646,7 +650,7 @@
 
 			if (CustomDOMParser) {
 				// This branch is used for node.js, with the xmldom parser.
-				parser = new CustomDOMParser();
+				parser = new CustomDOMParser(config.xmldomOptions);
 
 				domNode = parser.parseFromString(xml, "text/xml");
 			} else if (window && window.DOMParser) {

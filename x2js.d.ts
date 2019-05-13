@@ -129,6 +129,14 @@ declare namespace X2JS {
         emptyNodeForm?: 'object' | 'text';
 
         /**
+         * If "object" then <empty></empty> will be transformed to {}.
+         *
+         * @type {'object'}
+         * @memberOf X2JS.Options
+         */
+        xmldomOptions?: 'object';
+
+        /**
          * Allows attribute values to be converted on the fly during parsing to objects.
          * 
          * @type {Array<X2JS.AttributeConverter>}
