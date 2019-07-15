@@ -660,7 +660,7 @@
 				var isIEParser = window.ActiveXObject || "ActiveXObject" in window;
 
 				// IE9+ now is here
-				if (!isIEParser) {
+				if (!isIEParser && document.all && !document.addEventListener) {
 					try {
 						parsererrorNS = parser.parseFromString("INVALID", "text/xml").childNodes[0].namespaceURI;
 					} catch (err) {
