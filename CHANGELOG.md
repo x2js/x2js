@@ -1,3 +1,9 @@
+#### 3.3.1 (2019-07-15)
+
+##### Bug Fixes
+
+* **parseXml:**  [#74](https://github.com/Axinom/x2js/pull/74) Fix old IE compatibility check ([a96daa14](https://github.com/Axinom/x2js/commit/a96daa1480c63604c0d9e1882c4b890f9ba0f0f7))
+
 #### 3.2.6 (2019-01-24)
 #### 3.2.5 (2019-01-23)
 
