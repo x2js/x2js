@@ -237,4 +237,26 @@
 		}
 		assert.ok(true);
 	});
+
+	QUnit.test(`Element only has text node with default keepText(keepText='false')`, function (assert) {
+		var xml = '<document><element>text</element></document>';
+		var x = new X2JS();
+		var js = x.xml2js(xml);
+
+		assert.ok(js.document);
+		assert.ok(js.document.element);
+		assert.strictEqual(js.document.element, 'text');
+	});
+
+	QUnit.test(`Element only has text node with keepText='true'`, function (assert) {
+		var xml = '<document><element>text</element></document>';
+		var x = new X2JS({
+			'keepText': true
+		});
+		var js = x.xml2js(xml);
+
+		assert.ok(js.document);
+		assert.ok(js.document.element);
+		assert.strictEqual(js.document.element.__text, 'text');
+	});
 });
