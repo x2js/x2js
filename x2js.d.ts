@@ -231,6 +231,15 @@ declare namespace X2JS {
          * @memberOf X2JS.Options
          */
         keepCData?: boolean;
+
+
+        /**
+         * If this property defined as true, use { __text: 'abc' } over 'abc'
+         *
+         * @type {boolean}
+         * @memberOf X2JS.Options
+         */
+        keepText?: boolean;
     }
 
     export interface AttributeConverter {
