@@ -1,3 +1,13 @@
+#### 3.4.0 (2019-11-26)
+
+##### New Features
+
+* **keepTextConfig:**  Add config to always generate text node with __text. ([88a3a2e7](https://github.com/Axinom/x2js/commit/88a3a2e7864db976bdd8ffddaabab51a169e175a))
+
+##### Bug Fixes
+
+* **parseXml:**  [#74](https://github.com/Axinom/x2js/pull/74) Fix old IE compatibility check ([a96daa14](https://github.com/Axinom/x2js/commit/a96daa1480c63604c0d9e1882c4b890f9ba0f0f7))
+
 #### 3.3.1 (2019-07-15)
 
 ##### Bug Fixes

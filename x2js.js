@@ -48,7 +48,7 @@
 
 	// We return a constructor that can be used to make X2JS instances.
 	return function X2JS(config) {
-		var VERSION = "3.1.1";
+		var VERSION = "3.4.0";
 
 		config = config || {};
 
