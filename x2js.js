@@ -48,7 +48,7 @@
 
 	// We return a constructor that can be used to make X2JS instances.
 	return function X2JS(config) {
-		var VERSION = "3.1.1";
+		var VERSION = "3.4.0";
 
 		config = config || {};
 
@@ -137,6 +137,11 @@
 			// If this property defined as false and an XML element has CData node ONLY, it will be converted to text without additional property "__cdata"
 			if (config.keepCData === undefined) {
 				config.keepCData = false;
+			}
+
+			// If this property defined as true, use { __text: 'abc' } over 'abc'
+			if (config.keepText === undefined) {
+				config.keepText = false;
 			}
 
 			// If true, will output dates in UTC
@@ -408,7 +413,7 @@
 					delete result["#cdata-section_asArray"];
 			}
 
-			if (result.__cnt === 1 && result.__text) {
+			if (result.__cnt === 1 && result.__text && !config.keepText) {
 				result = result.__text;
 			} else if (result.__cnt === 0 && config.emptyNodeForm === "text") {
 				result = '';
