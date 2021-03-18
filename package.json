@@ -10,13 +10,13 @@
     "devDependencies": {
         "eslint": "^4.18.2",
         "eslint-config-axinom": "^1.0.3",
-        "karma": "^1.2.0",
+        "karma": "^6.2.0",
         "karma-chrome-launcher": "^2.0.0",
         "karma-firefox-launcher": "^1.0.0",
         "karma-ie-launcher": "^1.0.0",
         "karma-qunit": "^1.2.0",
         "qunit-cli": "^0.2.0",
-        "qunitjs": "^2.0.1",
+        "qunitjs": "^2.4.1",
         "rimraf": "^2.6.3",
         "uglify-js": "^3.4.9"
     },
