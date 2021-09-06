@@ -5,7 +5,7 @@
     "main": "x2js.js",
     "types": "x2js.d.ts",
     "dependencies": {
-        "xmldom": "^0.5.0"
+        "@xmldom/xmldom": "^0.7.4"
     },
     "devDependencies": {
         "eslint": "^4.18.2",
