@@ -1,3 +1,11 @@
+#### 3.4.2 (2021-09-06)
+
+##### Chores
+
+* **deps:**
+  *  bump path-parse from 1.0.6 to 1.0.7 ([ed25a3dd](https://github.com/x2js/x2js/commit/ed25a3dd0d7820ca27755f8966dbcbcbada26b1b))
+  *  bump ws from 7.4.4 to 7.4.6 ([909b4582](https://github.com/x2js/x2js/commit/909b4582c6052647c9d01e4bbf9a34b49205316b))
+
 #### 3.4.1 (2021-03-18)
 
 ##### Continuous Integration
