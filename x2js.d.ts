@@ -65,7 +65,7 @@ declare class X2JS {
      * 
      * @memberOf X2JS
      */
-    dom2js<T>(domNode: Document): T;
+    dom2js<T>(domNode: Document | Node): T;
 
     /**
      * 
