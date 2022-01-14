@@ -4,7 +4,7 @@
  * @class X2JS
  */
 declare class X2JS {
-    
+
     /**
      * Creates an instance of X2JS.
      * 
@@ -60,7 +60,7 @@ declare class X2JS {
      * Transforms a DOM tree to JavaScript objects.
      * 
      * @template T
-     * @param {Node} domNode
+     * @param {Document | Node} domNode
      * @returns {T}
      * 
      * @memberOf X2JS
