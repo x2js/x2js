@@ -1,3 +1,13 @@
+#### 3.4.3 (2022-01-14)
+
+##### Chores
+
+* **deps:**  bump engine.io from 4.1.1 to 4.1.2 ([10a0d1fb](https://github.com/x2js/x2js/commit/10a0d1fb67c9d788332879dd954a3529d812ea94))
+
+##### Bug Fixes
+
+* **X2JS:**  javadoc ([079a38d1](https://github.com/x2js/x2js/commit/079a38d1a212f3676cc93e9cb2612cd04f0d901f))
+
 #### 3.4.2 (2021-09-06)
 
 ##### Chores
