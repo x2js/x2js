@@ -8,7 +8,7 @@
         "@xmldom/xmldom": "^0.8.3"
     },
     "devDependencies": {
-        "eslint": "^4.18.2",
+        "eslint": "^8.25.0",
         "eslint-config-axinom": "^1.0.3",
         "karma": "^6.2.0",
         "karma-chrome-launcher": "^2.0.0",
