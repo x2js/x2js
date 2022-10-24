@@ -1,3 +1,14 @@
+#### 3.4.4 (2022-10-24)
+
+##### Chores
+
+* **deps:**
+  *  bump ajv and eslint ([17a7a6a8](https://github.com/x2js/x2js/commit/17a7a6a87dd8087b077dd529278bf15b099b3f8e))
+  *  bump minimist from 1.2.5 to 1.2.7 ([af9d3447](https://github.com/x2js/x2js/commit/af9d3447ab5a5d43bc6003c61be6b28c25158235))
+  *  bump @xmldom/xmldom from 0.7.4 to 0.8.3 ([85818b30](https://github.com/x2js/x2js/commit/85818b30a79e266c86a51bf690194d17b7db3660))
+  *  bump follow-redirects from 1.13.3 to 1.14.8 ([ef1bfcb9](https://github.com/x2js/x2js/commit/ef1bfcb96d8caca78fd82c07bfeccc2629465e82))
+* **deps-dev:**  bump karma from 6.2.0 to 6.3.16 ([ebfa25e7](https://github.com/x2js/x2js/commit/ebfa25e750ce741dc3f5aa41fc4066a16610d73a))
+
 #### 3.4.3 (2022-01-14)
 
 ##### Chores
