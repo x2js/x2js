@@ -1,40 +1,31 @@
-(function (root, factory) {
-	'use strict';
+/* eslint-disable strict -- standalone CJS test entry file, no concatenation risk */
+'use strict';
 
-	if (typeof module === 'object' && module.exports) {
-		// Node. Does not work with strict CommonJS, but only CommonJS-like
-		// environments that support module.exports, like Node.
-		factory(require('./x2js'), require('qunit-cli'));
-	} else {
-		// Browser globals (root is window)
-		factory(root.X2JS, root.QUnit);
-	}
-})(this, function (X2JS, QUnit) {
-	'use strict';
+/* global describe, it, expect */
+const X2JS = require('./x2js');
 
-	QUnit.module('Smoke tests');
-
-	QUnit.test('X->JS single element', function (assert) {
+describe('Smoke tests', () => {
+	it('X->JS single element', () => {
 		var xml = '<document><element>text</element></document>';
 		var x = new X2JS();
 
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.strictEqual(js.document.element, 'text');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element).toBe('text');
 	});
 
-	QUnit.test('X->JS two elements', function (assert) {
+	it('X->JS two elements', () => {
 		var xml = '<document><element1>text</element1><element2>text2</element2></document>';
 		var x = new X2JS();
 
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element1);
-		assert.strictEqual(js.document.element1, 'text');
-		assert.ok(js.document.element2);
-		assert.strictEqual(js.document.element2, 'text2');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element1).toBeTruthy();
+		expect(js.document.element1).toBe('text');
+		expect(js.document.element2).toBeTruthy();
+		expect(js.document.element2).toBe('text2');
 	});
 });

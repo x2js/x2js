@@ -1,29 +1,29 @@
 {
     "name": "x2js",
-    "version": "3.4.3",
+    "version": "3.4.4",
     "description": "Transforms between XML string and JavaScript object trees.",
     "main": "x2js.js",
     "types": "x2js.d.ts",
+    "files": [
+        "CHANGELOG.md",
+        "x2js.d.ts"
+    ],
     "dependencies": {
-        "@xmldom/xmldom": "^0.7.4"
+        "@xmldom/xmldom": "^0.9.12"
     },
     "devDependencies": {
-        "eslint": "^4.18.2",
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/git": "^10.0.1",
+        "eslint": "^8.25.0",
         "eslint-config-axinom": "^1.0.3",
-        "karma": "^6.2.0",
-        "karma-chrome-launcher": "^2.0.0",
-        "karma-firefox-launcher": "^1.0.0",
-        "karma-ie-launcher": "^1.0.0",
-        "karma-qunit": "^1.2.0",
-        "qunit-cli": "^0.2.0",
-        "qunitjs": "^2.4.1",
         "rimraf": "^2.6.3",
-        "uglify-js": "^3.4.9"
+        "semantic-release": "^25.0.9",
+        "uglify-js": "^3.4.9",
+        "vitest": "^3.0.0"
     },
     "scripts": {
-        "travistest": "npx karma start --single-run --browsers Firefox && npx qunit-cli all_tests.js && npx eslint --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
-        "test": "karma start --single-run && npx qunit-cli all_tests.js && npx eslint --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
-        "prepublish": "rimraf dist && mkdir dist && npx uglifyjs x2js.js -o dist/x2js.min.js -c -m --source-map \"includeSources='true',url='x2js.min.js.map'\""
+        "test": "vitest run && npx eslint --env node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
+        "prepack": "rimraf dist && mkdir dist && npx uglifyjs x2js.js -o dist/x2js.min.js -c -m --source-map \"includeSources='true',url='x2js.min.js.map'\""
     },
     "repository": {
         "type": "git",
@@ -45,7 +45,6 @@
     "eslintConfig": {
         "extends": "axinom",
         "env": {
-            "qunit": true,
             "node": true
         },
         "rules": {
@@ -60,5 +59,28 @@
     },
     "publishConfig": {
         "access": "public"
+    },
+    "release": {
+        "branches": [
+            "master"
+        ],
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            "@semantic-release/changelog",
+            "@semantic-release/npm",
+            [
+                "@semantic-release/git",
+                {
+                    "assets": [
+                        "package.json",
+                        "package-lock.json",
+                        "CHANGELOG.md"
+                    ],
+                    "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+                }
+            ],
+            "@semantic-release/github"
+        ]
     }
 }

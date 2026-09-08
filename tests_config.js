@@ -1,60 +1,51 @@
-(function (root, factory) {
-	'use strict';
+/* eslint-disable strict -- standalone CJS test entry file, no concatenation risk */
+'use strict';
 
-	if (typeof module === 'object' && module.exports) {
-		// Node. Does not work with strict CommonJS, but only CommonJS-like
-		// environments that support module.exports, like Node.
-		factory(require('./x2js'), require('qunit-cli'));
-	} else {
-		// Browser globals (root is window)
-		factory(root.X2JS, root.QUnit);
-	}
-})(this, function (X2JS, QUnit) {
-	'use strict';
+// Test cases are full of magic numbers and that's fine.
+/* eslint-disable no-magic-numbers */
 
-	// Test cases are full of magic numbers and that's fine.
-	/* eslint-disable no-magic-numbers */
+/* global describe, it, expect */
+const X2JS = require('./x2js');
 
-	QUnit.module('Configuration options');
-
-	QUnit.test('Default attribute prefix', function (assert) {
+describe('Configuration options', () => {
+	it('Default attribute prefix', () => {
 		var xml = '<document><element attribute="value" /></document>';
 		var x = new X2JS();
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.ok(js.document.element._attribute);
-		assert.strictEqual(js.document.element._attribute, 'value');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element._attribute).toBeTruthy();
+		expect(js.document.element._attribute).toBe('value');
 	});
 
-	QUnit.test('Empty attribute prefix', function (assert) {
+	it('Empty attribute prefix', () => {
 		var xml = '<document><element attribute="value" /></document>';
 		var x = new X2JS({
 			'attributePrefix': ''
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.ok(js.document.element.attribute);
-		assert.strictEqual(js.document.element.attribute, 'value');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element.attribute).toBeTruthy();
+		expect(js.document.element.attribute).toBe('value');
 	});
 
-	QUnit.test('Custom nonempty attribute prefix', function (assert) {
+	it('Custom nonempty attribute prefix', () => {
 		var xml = '<document><element attribute="value" /></document>';
 		var x = new X2JS({
 			'attributePrefix': '$$'
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.ok(js.document.element.$$attribute);
-		assert.strictEqual(js.document.element.$$attribute, 'value');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element.$$attribute).toBeTruthy();
+		expect(js.document.element.$$attribute).toBe('value');
 	});
 
-	QUnit.test('Attribute converters run but only when appropriate', function (assert) {
+	it('Attribute converters run but only when appropriate', () => {
 		var xml = '<Root><element test1="FAIL" test2="success 2.1">first</element><element test1="FAIL 1.2" test2="success 2.2">second</element></Root>';
 		var x = new X2JS({
 			'attributeConverters': [
@@ -70,30 +61,30 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.Root);
-		assert.ok(js.Root.element);
-		assert.ok(js.Root.element.length);
-		assert.ok(js.Root.element[0]);
-		assert.ok(js.Root.element[0]._test1);
-		assert.ok(js.Root.element[0]._test2);
-		assert.strictEqual(js.Root.element[0]._test1, 'success 1.*');
-		assert.strictEqual(js.Root.element[0]._test2, 'success 2.1');
-		assert.strictEqual(js.Root.element[1]._test1, 'success 1.*');
-		assert.strictEqual(js.Root.element[1]._test2, 'success 2.2');
+		expect(js.Root).toBeTruthy();
+		expect(js.Root.element).toBeTruthy();
+		expect(js.Root.element.length).toBeTruthy();
+		expect(js.Root.element[0]).toBeTruthy();
+		expect(js.Root.element[0]._test1).toBeTruthy();
+		expect(js.Root.element[0]._test2).toBeTruthy();
+		expect(js.Root.element[0]._test1).toBe('success 1.*');
+		expect(js.Root.element[0]._test2).toBe('success 2.1');
+		expect(js.Root.element[1]._test1).toBe('success 1.*');
+		expect(js.Root.element[1]._test2).toBe('success 2.2');
 	});
 
-	QUnit.test('Root element is dropped with ignoreRoot=true', function (assert) {
+	it('Root element is dropped with ignoreRoot=true', () => {
 		var xml = '<document><element attribute="value" /></document>';
 		var x = new X2JS({
 			'ignoreRoot': true
 		});
 		var js = x.xml2js(xml);
 
-		assert.notOk(js.document);
-		assert.ok(js.element);
+		expect(js.document).toBeFalsy();
+		expect(js.element).toBeTruthy();
 	});
 
-	QUnit.test('Array access-form override via path', function (assert) {
+	it('Array access-form override via path', () => {
 		var xml = '<document><element attribute="value" /></document>';
 		var x = new X2JS({
 			'arrayAccessFormPaths': [
@@ -102,14 +93,14 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.ok(js.document.element.length);
-		assert.strictEqual(js.document.element.length, 1);
-		assert.ok(js.document.element[0], 'value');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element.length).toBeTruthy();
+		expect(js.document.element.length).toBe(1);
+		expect(js.document.element[0]).toBeTruthy();
 	});
 
-	QUnit.test('Array access-form override via regex', function (assert) {
+	it('Array access-form override via regex', () => {
 		var xml = '<document><element attribute="value" /></document>';
 		var x = new X2JS({
 			'arrayAccessFormPaths': [
@@ -118,14 +109,14 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.ok(js.document.element.length);
-		assert.strictEqual(js.document.element.length, 1);
-		assert.ok(js.document.element[0], 'value');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element.length).toBeTruthy();
+		expect(js.document.element.length).toBe(1);
+		expect(js.document.element[0]).toBeTruthy();
 	});
 
-	QUnit.test('Array access-form override via function', function (assert) {
+	it('Array access-form override via function', () => {
 		var xml = '<document><element attribute="value" /></document>';
 		var x = new X2JS({
 			'arrayAccessFormPaths': [
@@ -136,14 +127,14 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.ok(js.document.element.length);
-		assert.strictEqual(js.document.element.length, 1);
-		assert.ok(js.document.element[0], 'value');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element.length).toBeTruthy();
+		expect(js.document.element.length).toBe(1);
+		expect(js.document.element[0]).toBeTruthy();
 	});
 
-	QUnit.test('Datetime parsing via path', function (assert) {
+	it('Datetime parsing via path', () => {
 		var xml = '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>';
 		var x = new X2JS({
 			'datetimeAccessFormPaths': [
@@ -152,13 +143,13 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.datetimeElement);
-		assert.ok(js.document.datetimeElement instanceof Date);
-		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
+		expect(js.document).toBeTruthy();
+		expect(js.document.datetimeElement).toBeTruthy();
+		expect(js.document.datetimeElement instanceof Date).toBeTruthy();
+		expect(js.document.datetimeElement.getFullYear()).toBe(2002);
 	});
 
-	QUnit.test('Datetime parsing via regex', function (assert) {
+	it('Datetime parsing via regex', () => {
 		var xml = '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>';
 		var x = new X2JS({
 			'datetimeAccessFormPaths': [
@@ -167,13 +158,13 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.datetimeElement);
-		assert.ok(js.document.datetimeElement instanceof Date);
-		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
+		expect(js.document).toBeTruthy();
+		expect(js.document.datetimeElement).toBeTruthy();
+		expect(js.document.datetimeElement instanceof Date).toBeTruthy();
+		expect(js.document.datetimeElement.getFullYear()).toBe(2002);
 	});
 
-	QUnit.test('Datetime parsing via function', function (assert) {
+	it('Datetime parsing via function', () => {
 		var xml = '<document><datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement></document>';
 		var x = new X2JS({
 			'datetimeAccessFormPaths': [
@@ -184,13 +175,13 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.datetimeElement);
-		assert.ok(js.document.datetimeElement instanceof Date);
-		assert.strictEqual(js.document.datetimeElement.getFullYear(), 2002);
+		expect(js.document).toBeTruthy();
+		expect(js.document.datetimeElement).toBeTruthy();
+		expect(js.document.datetimeElement instanceof Date).toBeTruthy();
+		expect(js.document.datetimeElement.getFullYear()).toBe(2002);
 	});
 
-	QUnit.test('Datetime parsing in different formats', function (assert) {
+	it('Datetime parsing in different formats', () => {
 		var xml = '<document>' +
 			'<datetimeElement>2002-10-10T12:00:00+04:00</datetimeElement>' +
 			'<datetimeElement>2002-10-10T12:00:00Z</datetimeElement>' +
@@ -204,59 +195,55 @@
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.datetimeElement);
-		assert.ok(js.document.datetimeElement.length);
-		assert.strictEqual(js.document.datetimeElement.length, 4);
+		expect(js.document).toBeTruthy();
+		expect(js.document.datetimeElement).toBeTruthy();
+		expect(js.document.datetimeElement.length).toBeTruthy();
+		expect(js.document.datetimeElement.length).toBe(4);
 
 		for (var i = 0; i < js.document.datetimeElement.length; i++) {
-			assert.ok(js.document.datetimeElement[i]);
-			assert.ok(js.document.datetimeElement[i] instanceof Date);
-			assert.strictEqual(js.document.datetimeElement[i].getFullYear(), 2002);
+			expect(js.document.datetimeElement[i]).toBeTruthy();
+			expect(js.document.datetimeElement[i] instanceof Date).toBeTruthy();
+			expect(js.document.datetimeElement[i].getFullYear()).toBe(2002);
 		}
 	});
 
-	QUnit.test('Options to xmldom', function (assert) {
+	it('Options to xmldom', () => {
 		var xml = '<';
 		var x = new X2JS({
 			'xmldomOptions': {
-				'errorHandler': {
-					error(error) {
-						throw error;
-					}
-				}
+				// `errorHandler` was removed by @xmldom/xmldom 0.9; `onError` is the replacement.
+				onError() {}
 			}
 		});
 
 		try {
 			x.xml2js(xml);
 		} catch (e) {
-			assert.equal(e, '[xmldom error]\telement parse error: [xmldom error]\tunexpected end of input\n' +
-				'@#[line:undefined,col:undefined]\n' +
-				'@#[line:undefined,col:undefined]');
+			expect(e.message).toBe('missing root element');
 		}
-		assert.ok(true);
+		expect(true).toBe(true);
 	});
 
-	QUnit.test(`Element only has text node with default keepText(keepText='false')`, function (assert) {
+	it(`Element only has text node with default keepText(keepText='false')`, () => {
 		var xml = '<document><element>text</element></document>';
 		var x = new X2JS();
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.strictEqual(js.document.element, 'text');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element).toBe('text');
 	});
 
-	QUnit.test(`Element only has text node with keepText='true'`, function (assert) {
+	it(`Element only has text node with keepText='true'`, () => {
 		var xml = '<document><element>text</element></document>';
 		var x = new X2JS({
 			'keepText': true
 		});
 		var js = x.xml2js(xml);
 
-		assert.ok(js.document);
-		assert.ok(js.document.element);
-		assert.strictEqual(js.document.element.__text, 'text');
+		expect(js.document).toBeTruthy();
+		expect(js.document.element).toBeTruthy();
+		expect(js.document.element.__text).toBe('text');
 	});
 });
+
