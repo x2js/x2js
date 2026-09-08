@@ -37,13 +37,10 @@ See the type definitions within `x2js.d.ts` for information about what configura
 
 # Automated tests
 
-A set of QUnit test cases are part of the project and act as the primary usage examples.
+A set of test cases are part of the project and act as the primary usage examples.
+They run under Node with [Vitest](https://vitest.dev/).
 
-Run `karma start --single run` to test with Chrome, Firefox and IE.
-Run `node_modules\.bin\qunit-cli all_tests.js` to test with the Node runtime.
-Run `npm test` to execute both sets of tests.
-
-Travis CI uses `npm travistest` to run tests using Firefox via Karma and Node.
+Run `npm test` to execute the tests and lint the code.
 
 # Contributing
 

@@ -14,19 +14,12 @@
     "devDependencies": {
         "eslint": "^8.25.0",
         "eslint-config-axinom": "^1.0.3",
-        "karma": "^6.2.0",
-        "karma-chrome-launcher": "^2.0.0",
-        "karma-firefox-launcher": "^1.0.0",
-        "karma-ie-launcher": "^1.0.0",
-        "karma-qunit": "^1.2.0",
-        "qunit-cli": "^0.2.0",
-        "qunitjs": "^2.4.1",
         "rimraf": "^2.6.3",
-        "uglify-js": "^3.4.9"
+        "uglify-js": "^3.4.9",
+        "vitest": "^3.0.0"
     },
     "scripts": {
-        "travistest": "npx karma start --single-run --browsers Firefox && npx qunit-cli all_tests.js && npx eslint --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
-        "test": "karma start --single-run && npx qunit-cli all_tests.js && npx eslint --env qunit,node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
+        "test": "vitest run && npx eslint --env node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
         "prepublish": "rimraf dist && mkdir dist && npx uglifyjs x2js.js -o dist/x2js.min.js -c -m --source-map \"includeSources='true',url='x2js.min.js.map'\""
     },
     "repository": {
@@ -49,7 +42,6 @@
     "eslintConfig": {
         "extends": "axinom",
         "env": {
-            "qunit": true,
             "node": true
         },
         "rules": {

@@ -1,20 +1,11 @@
-(function (root, factory) {
-	'use strict';
+/* eslint-disable strict -- standalone CJS test entry file, no concatenation risk */
+'use strict';
 
-	if (typeof module === 'object' && module.exports) {
-		// Node. Does not work with strict CommonJS, but only CommonJS-like
-		// environments that support module.exports, like Node.
-		factory(require('./x2js'), require('qunit-cli'));
-	} else {
-		// Browser globals (root is window)
-		factory(root.X2JS, root.QUnit);
-	}
-})(this, function (X2JS, QUnit) {
-	'use strict';
+/* global describe, it, expect */
+const X2JS = require('./x2js');
 
-	QUnit.module('Converting JavaScript objects to XML');
-
-	QUnit.test('Element with attribute', function (assert) {
+describe('Converting JavaScript objects to XML', () => {
+	it('Element with attribute', () => {
 		var js = {
 			'document': {
 				'element': {
@@ -30,10 +21,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Element with attribute and selfClosingElements set to false', function (assert) {
+	it('Element with attribute and selfClosingElements set to false', () => {
 		var js = {
 			'document': {
 				'element': {
@@ -51,10 +42,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Element with attribute and selfClosingElements set to true', function (assert) {
+	it('Element with attribute and selfClosingElements set to true', () => {
 		var js = {
 			'document': {
 				'element': {
@@ -72,10 +63,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Element with attribute containing XML characters', function (assert) {
+	it('Element with attribute containing XML characters', () => {
 		var js = {
 			'document': {
 				'element': {
@@ -91,10 +82,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Just a string', function (assert) {
+	it('Just a string', () => {
 		var js = {
 			'document': {
 				'elementY': 'hello there'
@@ -108,10 +99,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('String with XML characters', function (assert) {
+	it('String with XML characters', () => {
 		var js = {
 			'document': {
 				'elementY': 'hello &there<'
@@ -125,10 +116,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('CDATA', function (assert) {
+	it('CDATA', () => {
 		var js = {
 			'document': {
 				'elementZ': { '__cdata': 'hello again' }
@@ -142,10 +133,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('CDATA with XML characters', function (assert) {
+	it('CDATA with XML characters', () => {
 		var js = {
 			'document': {
 				'elementZ': { '__cdata': 'hello &again<' }
@@ -159,10 +150,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Empty string as value', function (assert) {
+	it('Empty string as value', () => {
 		var js = {
 			'document': {
 				'elementU': ''
@@ -176,10 +167,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Zero as value', function (assert) {
+	it('Zero as value', () => {
 		var js = {
 			'document': {
 				'element': 0
@@ -192,10 +183,10 @@
 			'<element>0</element>' +
 			'</document>';
 
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Empty string as value with selfClosingElements set to false', function (assert) {
+	it('Empty string as value with selfClosingElements set to false', () => {
 		var js = {
 			'document': {
 				'elementU': ''
@@ -212,10 +203,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Basic array', function (assert) {
+	it('Basic array', () => {
 		var js = {
 			'document': {
 				'elementV': [
@@ -233,10 +224,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Array of empty strings', function (assert) {
+	it('Array of empty strings', () => {
 		var js = {
 			'document': {
 				'elementX': ['', '']
@@ -251,10 +242,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Array of empty strings with selfClosingElements set to false', function (assert) {
+	it('Array of empty strings with selfClosingElements set to false', () => {
 		var js = {
 			'document': {
 				'elementX': ['', '']
@@ -271,10 +262,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Attributes in array', function (assert) {
+	it('Attributes in array', () => {
 		var js = {
 			'document': {
 				'elementV': [
@@ -298,10 +289,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Falsey element values + attributes', function (assert) {
+	it('Falsey element values + attributes', () => {
 		var js = {
 			'document': {
 				'elementV': [
@@ -336,11 +327,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-
-	QUnit.test('Namespaces', function (assert) {
+	it('Namespaces', () => {
 		var js = {
 			'document': {
 				'__prefix': 'ns',
@@ -370,10 +360,10 @@
 			'</ns:document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Filter out', function (assert) {
+	it('Filter out', () => {
 		var js = {
 			'document': {
 				'elementV': [
@@ -396,10 +386,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('Attribute converter', function (assert) {
+	it('Attribute converter', () => {
 		var js = {
 			'document': {
 				'elementV': [
@@ -423,10 +413,10 @@
 			'</document>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('UTC dates', function (assert) {
+	it('UTC dates', () => {
 		var date = new Date();
 		var js = {
 			'date': date
@@ -441,10 +431,10 @@
 			'</date>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 
-	QUnit.test('ISO dates', function (assert) {
+	it('ISO dates', () => {
 		var date = new Date();
 		var js = {
 			'date': date
@@ -457,6 +447,7 @@
 			'</date>';
 
 		// Implementation does not guarantee formatting so the test is somewhat fragile.
-		assert.strictEqual(xml, expected);
+		expect(xml).toBe(expected);
 	});
 });
+

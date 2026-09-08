@@ -1,32 +1,23 @@
-(function (root, factory) {
-	'use strict';
+/* eslint-disable strict -- standalone CJS test entry file, no concatenation risk */
+'use strict';
 
-	if (typeof module === 'object' && module.exports) {
-		// Node. Does not work with strict CommonJS, but only CommonJS-like
-		// environments that support module.exports, like Node.
-		factory(require('./x2js'), require('qunit-cli'));
-	} else {
-		// Browser globals (root is window)
-		factory(root.X2JS, root.QUnit);
-	}
-})(this, function (X2JS, QUnit) {
-	'use strict';
+/* global describe, it, expect */
+const X2JS = require('./x2js');
 
-	QUnit.module('Funky tests');
-
-	QUnit.test('asArray() converts to array', function (assert) {
+describe('Funky tests', () => {
+	it('asArray() converts to array', () => {
 		var x = new X2JS();
 
 		// It preserves existing arrays.
-		assert.propEqual(x.asArray([1, 2, 3]), [1, 2, 3]);
+		expect(x.asArray([1, 2, 3])).toEqual([1, 2, 3]);
 
 		// And converts anything else.
-		assert.propEqual(x.asArray('stringvalue'), ['stringvalue']);
-		assert.propEqual(x.asArray({}), [{}]);
-		assert.propEqual(x.asArray(''), ['']);
+		expect(x.asArray('stringvalue')).toEqual(['stringvalue']);
+		expect(x.asArray({})).toEqual([{}]);
+		expect(x.asArray('')).toEqual(['']);
 
 		// Except some things, which are turned into empty arrays just because.
-		assert.propEqual(x.asArray(null), []);
-		assert.propEqual(x.asArray(undefined), []);
+		expect(x.asArray(null)).toEqual([]);
+		expect(x.asArray(undefined)).toEqual([]);
 	});
 });
