@@ -7,7 +7,7 @@ The conversion is not necessarily lossless but it is very convenient.
 
 master | development
 ------ | -----------
-[![Build Status](https://travis-ci.org/x2js/x2js.svg?branch=master)](https://travis-ci.org/x2js/x2js) | [![Build Status](https://travis-ci.org/x2js/x2js.svg?branch=development)](https://travis-ci.org/x2js/x2js)
+[![CI](https://github.com/x2js/x2js/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/x2js/x2js/actions/workflows/ci.yml) | [![CI](https://github.com/x2js/x2js/actions/workflows/ci.yml/badge.svg?branch=development)](https://github.com/x2js/x2js/actions/workflows/ci.yml)
 
 # Integration
 
@@ -41,6 +41,14 @@ A set of test cases are part of the project and act as the primary usage example
 They run under Node with [Vitest](https://vitest.dev/).
 
 Run `npm test` to execute the tests and lint the code.
+
+# Releases
+
+Releases are fully automated with [semantic-release](https://semantic-release.gitbook.io/semantic-release/):
+every push to `master` is analyzed, and if the commits since the last release warrant one
+(per the [commit message format](#commit) below), a new version is computed, `CHANGELOG.md` is
+updated, a Git tag and GitHub release are created, and the package is published to npm — no manual
+version bump or `npm publish` needed.
 
 # Contributing
 
