@@ -9,7 +9,7 @@
         "x2js.d.ts"
     ],
     "dependencies": {
-        "@xmldom/xmldom": "^0.8.3"
+        "@xmldom/xmldom": "^0.9.12"
     },
     "devDependencies": {
         "eslint": "^8.25.0",
