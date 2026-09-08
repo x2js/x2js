@@ -17,7 +17,7 @@
         "eslint": "^8.25.0",
         "eslint-config-axinom": "^1.0.3",
         "rimraf": "^2.6.3",
-        "semantic-release": "^24.0.0",
+        "semantic-release": "^25.0.9",
         "uglify-js": "^3.4.9",
         "vitest": "^3.0.0"
     },
