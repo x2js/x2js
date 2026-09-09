@@ -1,3 +1,11 @@
+## [3.4.5](https://github.com/x2js/x2js/compare/v3.4.4...v3.4.5) (2026-09-09)
+
+
+### Bug Fixes
+
+* bumb node version to 24 ([a9c9432](https://github.com/x2js/x2js/commit/a9c9432e13f69eaf1eee8db19232cba601eba327))
+* registry ([70cccb1](https://github.com/x2js/x2js/commit/70cccb1520b405fa52a5a27a131a8073d6035f62))
+
 #### 3.4.4 (2022-10-24)
 
 ##### Chores
