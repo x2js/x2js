@@ -19,7 +19,7 @@
         "rimraf": "^2.6.3",
         "semantic-release": "^25.0.9",
         "uglify-js": "^3.4.9",
-        "vitest": "^3.0.0"
+        "vitest": "^5.0.0"
     },
     "scripts": {
         "test": "vitest run && npx eslint --env node --no-eslintrc --config ./node_modules/eslint-config-axinom/index.js *.js",
